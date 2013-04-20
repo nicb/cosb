@@ -1,0 +1,19 @@
+         ;
+         ; $Id: csound_test_sound_source.orc.erb 16 2013-04-19 20:43:38Z nicb $
+         ;
+         ;
+         ; input instruments
+         ;
+         instr     <%= cr.input_instrument_numbers %>
+
+         ifirst    init      <%= cr.first_input_instrument %>
+         index     init      p1 - ifirst ; audio channel (mono)
+         iamp      =         ampdbfs(p4)
+         idur      =         p3
+
+         asig      rand      iamp
+         asig      linen     asig, 0.005, idur, 0.005
+
+                   zawm      asig, index
+
+         endin

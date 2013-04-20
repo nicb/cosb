@@ -1,0 +1,27 @@
+        ;
+        ; $Id$
+        ;
+        ; By default, only single-segment (static positioning) movements are defined.
+        ; Use the '-m' option to substitute this template with one of yours.
+        ;
+        instr <%= cr.list_numbers(301, 301 + cr.configuration.global_configuration.simultaneous_movements) %>
+
+        ifirst      init     301
+        index       init     p1 - ifirst
+        iparoffset  init     index * 2
+        ixindex     init     iparoffset     ; x of { x, y }
+        iyindex     init     iparoffset + 1 ; y of { x, y }
+        idur        =        p3
+        ixstart     =        p4
+        ixend       =        p5
+        iystart     =        p6
+        iyend       =        p7
+				idursmps    =        int(idur*kr)
+				idurfinal   =        idursmps/kr
+
+        kx          line     ixstart, idurfinal, ixend
+        ky          line     iystart, idurfinal, iyend
+
+                    zkw      kx, ixindex
+                    zkw      ky, iyindex
+        endin

@@ -1,0 +1,25 @@
+#:stopdoc:
+#
+# $Id: csound_test_space_config.yml 16 2013-04-19 20:43:38Z nicb $
+#
+#:startdoc:
+#
+# This is a specific configuration to test that the csound orchestra behaves
+# correctly. It should remain very dry to check if routing is done properly.
+#
+space:
+  identifier: Test 9 channels
+  loudspeaker_positions:
+    1: [ -9.5,  20, 'l' ]
+    2: [  9.5,  20, 'r' ]
+    3: [ -11,    8, 'l' ]
+    4: [  11,    8, 'r' ]
+    5: [ -11,   -8, 'l' ]
+    6: [  11,   -8, 'r' ]
+    7: [ -9.5, -18, 'l' ]
+    8: [  9.5, -18, 'r' ]
+    9: [  0,    20, 'c' ]
+  virtual_space:
+    width: 22.5
+    depth: 42
+  reverberation_decay: 0.3

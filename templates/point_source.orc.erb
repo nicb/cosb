@@ -1,0 +1,72 @@
+        ;
+        ; $Id: point_source.orc.erb 16 2013-04-19 20:43:38Z nicb $
+        ;
+        ;----------------------------------------------
+        ; POINT-SOURCE ROOM INSTRUMENTS
+        ;----------------------------------------------
+        ;
+        instr <%= cr.point_source_instrument_numbers %>
+        ;
+        ; input indexings
+        ;
+        ifirst     init <%= cr.first_point_source_instrument %> ; first instrument number
+        index      init p1 - ifirst ; audio channel (mono)
+        iparoffset init index * 2   ; data structure is { x, y }
+        ixindex    init iparoffset
+        iyindex    init iparoffset + 1
+                   print p1, index, ixindex, iyindex
+        ;
+        idur       = p3
+        iattadir   = ampdb(p4)       ; amplitude attenuation (in dB)
+        iattarev   = ampdb(p5)       ; reverb send attenuation
+        ;
+
+        ;
+        ; audio input
+        ;
+        arcv      zar  index         ; signal
+        audioin   =    arcv * iattadir
+        asend     =    0
+                  zacl index,index   ; clear signal after reading
+        ;
+        ; position (coming from the movement engines)
+        ;
+        kx        zkr  ixindex      
+        ky        zkr  iyindex
+
+        ;
+        ; inner and outer room definitions
+        ;
+        ideltaf   init 20000                   ; should be around the threshold of hearing
+<%= cr.room_definition %>
+        ;
+        ; front/back filtering
+        ;
+        kfbfc     =    ideltaf * (1 + (ky/iy))
+        afiltered tone audioin, kfbfc
+
+        audio     = (ky >= 0 ? audioin : afiltered)
+
+        ;
+        ; first-order reflection positions (clock-wise order)
+        ;
+				kxmax     = 2*(ixmax-kx)
+				kymax     = 2*(iymax-ky)
+				kxmin     = 2*(kx-ixmin)
+				kymin     = 2*(ky-iymin)
+        kw1       = ky + kymax  ; reflection from front wall
+        kw2       = kx + kxmax  ; reflection from right wall
+        kw3       = kymin - ky  ; reflection from back wall
+        kw4       = kxmin - kx  ; reflection from left wall
+				kw1sq     = kw1*kw1
+				kw2sq     = kw2*kw2
+				kw3sq     = kw3*kw3
+				kw4sq     = kw4*kw4
+
+        adeld     delayr    1   ; maximum delay: 1 second (more than enough)
+
+<%= cr.point_sources %>
+
+                  delayw    audio
+
+        endin

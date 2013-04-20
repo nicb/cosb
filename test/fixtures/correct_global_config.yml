@@ -1,0 +1,23 @@
+#:stopdoc:
+#
+# $Id: correct_global_config.yml 9 2012-05-16 01:46:09Z nicb $
+#
+#:startdoc:
+#
+# The <tt>global configuration</tt> concerns all the global parameters that
+# are required while creating a csound spatialization score. That is:
+#
+#  * sampling rate
+#  * ksmps
+#  * number of audio sources required
+#  * number of simultaneous movements required
+#  * number of point sources per wide volume object
+#
+#  The +default+ file is the file loaded if no other file is specified
+#
+global:
+  sample_rate: 96000
+  ksmps:         100
+  audio_sources:           100
+  simultaneous_movements:  100
+  points_per_w_object:    13

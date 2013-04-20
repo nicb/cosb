@@ -1,0 +1,21 @@
+#:stopdoc:
+#
+# $Id: pollini-9ch.yml 3 2012-05-15 03:21:07Z nicb $
+#
+#:startdoc:
+# The auditorium of the Conservatorio "C.Pollini" in Padova is a physical
+# space which measures approx 22 m in width and 45 m in depth. It posseses a
+# 9.2 spatialization system which may be mapped as an 8 channel or 9 channel
+# (with a central cluster). Loudspeaker numbering leaves all odd speakers to
+# the left of the public (1, 3, 5, 7) and all even speakers to the right (2,
+# 4, 6, 8) and speaker 9 front center.
+#
+space:
+  identifier: Stereo Version Sala Prove
+  loudspeaker_positions:
+    1: [ -3,  5, 'l' ]
+    2: [  3,  5, 'r' ]
+  virtual_space:
+    width: 50
+    depth: 50
+  reverberation_decay: 2.3

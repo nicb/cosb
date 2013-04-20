@@ -1,0 +1,36 @@
+        ;
+        ; $Id: reverb_and_output.orc.erb 9 2012-05-16 01:46:09Z nicb $
+        ;
+        ; reverb and final output instrument
+        ;
+        instr <%= Cosb::CsoundRenderer::DEFAULT_REVERB_INSTRUMENT %>
+
+        irevtc      init <%= cr.configuration.space_configuration.reverberation_decay %>
+        irevtl      init irevtc-0.05
+        irevtr      init irevtc+0.05
+        iatl        =    0.921         ; attenuation f_acute left
+        iatr        =    0.919         ; attenuation f_acute right
+        iatc        =    0.920         ; attenuation f_acute center
+        isiglp      =    4000          ; low-pass filtering of input signal
+
+<% cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
+        ;
+        ; channel <%= sp.number %>
+        ;
+        idirbus<%= sp.number %>  init <%= sp.direct_output_bus %>
+        irevbus<%= sp.number %>  init <%= sp.reverb_output_bus %>
+
+        adir<%= sp.number %>     zar  idirbus<%= sp.number %>
+        arevsend<%= sp.number %> zar  irevbus<%= sp.number %>
+
+        arssp<%= sp.number %>    butterlp  arevsend<%= sp.number %>, isiglp
+        arev<%= sp.number %>     nreverb   arssp<%= sp.number %>, irevt<%= sp.lrc %>, iat<%= sp.lrc %>
+                  zacl      idirbus<%= sp.number %>, idirbus<%= sp.number %>
+                  zacl      irevbus<%= sp.number %>, irevbus<%= sp.number %>
+<% end %>
+        ;
+        ; final output stage
+        ;
+                  outc <%= cr.final_output_stage %>
+
+        endin
