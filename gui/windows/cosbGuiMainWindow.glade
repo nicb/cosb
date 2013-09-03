@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="cosbGuiMainWindow">
+    <property name="can_focus">False</property>
+    <property name="border_width">6</property>
+    <property name="title" translatable="yes">COSB Csound Orchestra Spatialize Builder</property>
+    <property name="default_width">800</property>
+    <property name="default_height">600</property>
+    <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+</interface>
