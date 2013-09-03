@@ -6,7 +6,7 @@ require 'hoe'
 require 'fileutils'
 require './lib/cosb'
 
-Hoe.plugin :newgem
+# Hoe.plugin :newgem
 # Hoe.plugin :website
 # Hoe.plugin :cucumberfeatures
 
@@ -17,11 +17,10 @@ $hoe = Hoe.spec 'cosb' do
   self.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
   self.rubyforge_name       = self.name # TODO this is default value
   # self.extra_deps         = [['activesupport','>= 2.0.2']]
-
 end
 
-require 'newgem/tasks'
-Dir['lib/tasks/**/*.rake'].each { |t| load t }
+#require 'newgem/tasks'
+#Dir['lib/tasks/**/*.rake'].each { |t| load t }
 
 # TODO - want other tests/tasks run by default? Add them to the list
 # remove_task :default

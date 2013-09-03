@@ -4,7 +4,7 @@
 #  Author:  Daniele Scarano
 
 require 'rubygems'
-require 'libglade2'
+# require 'libglade2'
 require 'gtk2'
 
 require File.expand_path(File.dirname(__FILE__) + "/../lib/cosb")

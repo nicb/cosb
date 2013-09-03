@@ -6,6 +6,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require File.join('cosb', 'constants')
 
+# add each new file in /lib/cosb/
 %w(
 	exceptions
 	virtual_space
@@ -13,4 +14,5 @@ require File.join('cosb', 'constants')
 	configuration
 	csound_renderer
 	cli
+	cosb_main_window
 ).each { |f| require File.join('cosb', f) }

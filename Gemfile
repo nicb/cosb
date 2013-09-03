@@ -6,3 +6,6 @@ source "https://rubygems.org"
 
 gem 'newgem'
 gem 'hoe', '>= 3.0.5'
+gem 'rdoc'
+gem 'glib2', '=1.2.6'
+gem 'gtk2'

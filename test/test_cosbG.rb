@@ -1,3 +1,8 @@
+#!/usr/bin/env ruby
+#
+#  Created on 2013-09-03.
+#  Author:  Daniele Scarano
+
 class TestcosbG < Test::Unit::TestCase
 
   def setup
@@ -7,9 +12,9 @@ class TestcosbG < Test::Unit::TestCase
 # Tasks
 
 # this is a test task ..just to see if it works fine
-  def test_cosbG_shell_output_task
-    puts 'shel output task'
-  end
+  #def test_cosbG_shell_output_task
+  #  puts 'shel output task'
+  #end
   
   def test_cosbgui_main_window
     @main_window = Cosb::Cosbgui.new(@cosbG_main_window)
