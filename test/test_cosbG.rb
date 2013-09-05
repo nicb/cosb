@@ -20,6 +20,9 @@ class TestcosbG < Test::Unit::TestCase
     @main_window = Cosb::Cosbgui.new(@cosbG_main_window)
     assert_not_nil(@main_window)
     assert_respond_to(@main_window, :gtk_main_quit)
+    assert_respond_to(@main_window, :statusbar_write)
+#    assert_respond_to(@main_window, :get_current_widget)
+    assert_respond_to(@main_window, :preview_button_action)
   end
 
 end
