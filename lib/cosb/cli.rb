@@ -10,9 +10,9 @@ module Cosb
       options = {
         :space               => Configuration::DEFAULT_SPACE_CONFIGURATION,
         :global              => Configuration::DEFAULT_GLOBAL_CONFIGURATION,
-				:sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
-				:movements           => CsoundRenderer::DEFAULT_TEMPLATES[:movements],
-				:reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
+	:sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
+        :movements           => CsoundRenderer::DEFAULT_TEMPLATES[:movements],
+	:reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
       }
       mandatory_options = %w(  )
 
@@ -57,12 +57,12 @@ module Cosb
 
       space_configuration  = options[:space]
       global_configuration = options[:global]
-			sound_input_template = options[:sound_input]
-			movements_template   = options[:movements]
-			rao_template         = options[:reverb_and_output]
+      sound_input_template = options[:sound_input]
+      movements_template   = options[:movements]
+      rao_template         = options[:reverb_and_output]
 
-			cr = Cosb::CsoundRenderer.new(space_configuration, global_configuration, sound_input_template, movements_template, rao_template)
-			stdout.puts(cr.render)
+      cr = Cosb::CsoundRenderer.new(space_configuration, global_configuration, sound_input_template, movements_template, rao_template)
+      stdout.puts(cr.render)
     end
   end
 end

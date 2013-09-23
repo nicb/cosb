@@ -12,7 +12,7 @@ module Cosb
 =begin rdoc
   === GUI for cosb
 
-  The code is built on GTK API
+  The code is built on GTK2 API
   Defines general behaviour of cosbGUI
 =end
 
@@ -44,19 +44,26 @@ module Cosb
             id = @statusbar.get_context_id("")
             # command line message
             puts "this is statusbar id : #{id} and this is the message #{message}"
+            # statusbar message
             @statusbar.push(id, message)
         end
         
         #devel this function (is it necessary?!)
-        def get_current_widget(widget)
-            me = widget.to_s
-            wname = @builder.get_object(me)
-            puts "io sono #{wname} oppure #{me}"
-        end
+        #def get_current_widget(widget)
+        #    me = widget.to_s
+        #    wname = @builder.get_object(me)
+        #    puts "io sono #{wname} oppure #{me}"
+        #end
         
         def preview_button_action(widget)
             message = "Generatin Preview..."
             statusbar_write(message)
+            a = Cosb::Configuration::DEFAULT_SPACE_CONFIGURATION
+            b = File.open(a.to_s, "r")
+            content = b.read
+            @preview = @builder.get_object("previewBuffer")
+            @preview.text = content
+            statusbar_write("Preview file "+a.to_s+" complete")
         end
     end
 
