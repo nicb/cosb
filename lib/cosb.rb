@@ -14,5 +14,6 @@ require File.join('cosb', 'constants')
 	configuration
 	csound_renderer
 	cli
+	guicli
 	cosb_main_window
 ).each { |f| require File.join('cosb', f) }

@@ -4,10 +4,10 @@
 require 'optparse'
 
 module Cosb
-  class GuiCLI
-          
+  class Cosbgui
+      
 
-    
+          
     def self.stdOut(stdout, arguments=[] )
         
 
@@ -79,5 +79,7 @@ module Cosb
         end
         
     end
+    
   end
+  
 end

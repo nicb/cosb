@@ -111,6 +111,7 @@ module Cosb
 
 		DEFAULT_GLOBAL_CONFIGURATION = File.join(CONFIG_PATH, 'global', 'default.yml')
 		DEFAULT_SPACE_CONFIGURATION = File.join(CONFIG_PATH, 'spaces', 'default.yml')
+		DEFAULT_OUTPUT_FILE = File.join(OUTPUT_PATH, 'cosbOrchestra.csd')
 
 		def load(scf = DEFAULT_SPACE_CONFIGURATION, gcf = DEFAULT_GLOBAL_CONFIGURATION)
 			self.global_configuration = ConfigurationFile::Global.new(gcf)

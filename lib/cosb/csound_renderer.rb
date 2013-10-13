@@ -23,18 +23,19 @@ module Cosb
 
 		DEFAULT_TEMPLATES =
 		{
-			:header            => template('header.orc.erb'),
-		  :sound_source      => template('sound_source.orc.erb'),
-			:movements         => template('movements.orc.erb'),
-			:point_source      => template('point_source.orc.erb'),
-		  :room_definition   => template('room_definition.orc.erb'),
-			:single_speaker    => template('single_speaker.orc.erb'),
-		  :reverb_and_output => template('reverb_and_output.orc.erb'),
+		    :header            => template('header.orc.erb'),
+                    :sound_source      => template('sound_source.orc.erb'),
+		    :movements         => template('movements.orc.erb'),
+		    :point_source      => template('point_source.orc.erb'),
+                    :room_definition   => template('room_definition.orc.erb'),
+		    :single_speaker    => template('single_speaker.orc.erb'),
+                    :reverb_and_output => template('reverb_and_output.orc.erb'),
 		}
 
 		attr_reader :configuration, :templates
 
-		def initialize(scf = Configuration::DEFAULT_SPACE_CONFIGURATION, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
+#		def initialize(scf = Configuration::DEFAULT_SPACE_CONFIGURATION, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
+                def initialize(scf , gcf , sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
 			@templates = DEFAULT_TEMPLATES.dup
 			@configuration = Configuration.instance
 			self.configuration.load(scf, gcf)
