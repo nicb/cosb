@@ -15,11 +15,14 @@ module Cosb
 			end
 
 		end
-
+                # set start range of input instruments
 		DEFAULT_INPUT_INSTRUMENT_OFFSET        =    1
+		# set start range of movements instruments
 		DEFAULT_POINT_SOURCE_INSTRUMENT_OFFSET = 1301
+		# set start range of room/reflections instruments
 		DEFAULT_WIDE__SOURCE_INSTRUMENT_OFFSET = 1601
-		DEFAULT_REVERB_INSTRUMENT              = 5000 # does reverb *and* output
+		# does reverb *and* output
+		DEFAULT_REVERB_INSTRUMENT              = 5000 
 
 		DEFAULT_TEMPLATES =
 		{
@@ -34,8 +37,7 @@ module Cosb
 
 		attr_reader :configuration, :templates
 
-#		def initialize(scf = Configuration::DEFAULT_SPACE_CONFIGURATION, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
-                def initialize(scf , gcf , sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
+		def initialize(scf = Configuration::DEFAULT_SPACE_CONFIGURATION, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
 			@templates = DEFAULT_TEMPLATES.dup
 			@configuration = Configuration.instance
 			self.configuration.load(scf, gcf)
@@ -53,9 +55,9 @@ module Cosb
 		end
 
 		def point_source_instrument_numbers
-		  start = DEFAULT_POINT_SOURCE_INSTRUMENT_OFFSET
-			finish = start + self.configuration.global_configuration.simultaneous_movements
-			list_numbers(start, finish)
+                    start = DEFAULT_POINT_SOURCE_INSTRUMENT_OFFSET
+		    finish = start + self.configuration.global_configuration.simultaneous_movements
+		    list_numbers(start, finish)
 		end
 
 		def first_point_source_instrument

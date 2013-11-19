@@ -6,7 +6,7 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 class TestConfiguration < Test::Unit::TestCase
 
   def test_csound_renderer
-		assert cr = Cosb::CsoundRenderer.new
+		assert cr = Cosb::CsoundRenderer.new(Cosb::Configuration::DEFAULT_SPACE_CONFIGURATION, Cosb::Configuration::DEFAULT_GLOBAL_CONFIGURATION)
 		assert out = cr.render
 		assert_match(/sr\s*=\s*#{cr.configuration.global_configuration.sample_rate}/, out)
 		assert_match(/ksmps\s*=\s*#{cr.configuration.global_configuration.ksmps}/, out)
