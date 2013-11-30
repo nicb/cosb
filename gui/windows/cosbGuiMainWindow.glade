@@ -2,6 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
+  <object class="GtkTextBuffer" id="consoleBuffer"/>
   <object class="GtkWindow" id="cosbGuiMainWindow">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -225,6 +226,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
+                                    <property name="buffer">consoleBuffer</property>
                                   </object>
                                 </child>
                               </object>
@@ -287,7 +289,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="clear_preview" swapped="no"/>
+                    <signal name="clicked" handler="preview_clear" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -302,6 +304,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <signal name="clicked" handler="saveOrchestraFile" swapped="no"/>
+                    <signal name="clicked" handler="file_save_dialog" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -653,7 +656,6 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="clicked" handler="clear_preview" swapped="no"/>
                             <signal name="clicked" handler="globConfigViewButton_action" swapped="no"/>
                           </object>
                           <packing>
@@ -847,6 +849,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="headerTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -861,6 +864,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setHeaderTemplateFilenameEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -875,6 +879,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="headerTemplateFilenameEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -920,6 +926,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="soundSourceTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -934,6 +941,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setSoundSourceTemplateEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -948,6 +956,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="soundSourceTemplateEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -993,6 +1003,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="movementsTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1007,6 +1018,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setMovementsTemplateEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1021,6 +1033,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="movementsTemplateEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1066,6 +1080,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="pointSourceTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1080,6 +1095,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setPointSourceTemplateEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1094,6 +1110,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="pointSourceTemplateEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1139,6 +1157,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="roomDefinitionTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1153,6 +1172,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setRoomDefinitionTemplateFilenameEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1167,6 +1187,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="roomDefinitionTemplateFilenameEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1212,6 +1234,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="singleSpeakerTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1226,6 +1249,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setSingleSpeakerTemplateFilenameEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1240,6 +1264,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="roomDefinitionTemplateFilenameEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1285,6 +1311,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="reverbAndOutputTemplateView_action" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1299,6 +1326,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="setReverbAndOutputTemplateFilenameEntryDefault" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1313,6 +1341,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="fileChooser_show" swapped="no"/>
+                            <signal name="clicked" handler="roomDefinitionTemplateFilenameEntry" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1476,4 +1506,5 @@
     </action-widgets>
   </object>
   <object class="GtkTextBuffer" id="previewBuffer"/>
+  <object class="GtkEntryBuffer" id="tempBuffer"/>
 </interface>

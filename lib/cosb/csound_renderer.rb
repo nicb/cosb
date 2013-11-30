@@ -23,7 +23,7 @@ module Cosb
 		DEFAULT_WIDE__SOURCE_INSTRUMENT_OFFSET = 1601
 		# does reverb *and* output
 		DEFAULT_REVERB_INSTRUMENT              = 5000 
-
+                # load default templates files
 		DEFAULT_TEMPLATES =
 		{
 		    :header            => template('header.orc.erb'),
@@ -46,6 +46,7 @@ module Cosb
 			self.templates[:reverb_and_output] = rt
 		end
 
+                # main stage of csound code generator
 		def render
 			full_output  = render_header
 			full_output += render_sound_source

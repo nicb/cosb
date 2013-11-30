@@ -8,6 +8,7 @@
 require 'gtk2'
 
 require File.expand_path(File.dirname(__FILE__) + '/gui_widget.rb')
+require File.expand_path(File.dirname(__FILE__) + '/gui_dialog.rb')
 
 module Cosb
 =begin rdoc
@@ -24,6 +25,9 @@ module Cosb
             @builder = Gtk::Builder::new
             @builder.add_from_file(window_path)
             @builder.connect_signals{ |handler| method(handler) }
+            
+            # Init of csound renderer
+            @cr = Cosb::CsoundRenderer.new()
     
             # Initialization of main window
             @cosb_main_window = @builder.get_object("cosbGuiMainWindow")
@@ -39,22 +43,52 @@ module Cosb
         
         #This method should be private - writing in status bar is delegated to GUI widgets
         def statusbar_write(message)
-            @statusbar = @builder.get_object("cosbGuiStatusbar")
-            id = @statusbar.get_context_id("")
-            @statusbar.push(id, message)
+            statusbar = @builder.get_object("cosbGuiStatusbar")
+            id = statusbar.get_context_id("")
+            statusbar.push(id, message)
+        end
+        
+        # this method outputs information about current operation in console view
+        def console_write(message)
+            console = @builder.get_object("consoleBuffer")
+            console.text += message
+        end
+        
+        def store_current_file(text)
+            @tempBuffer = @builder.get_object("tempBuffer")
+            @tempBuffer.text = text 
+        end
+        
+        # initialize preview contest
+        def preview_init(filename)
+            
+            message = "Generatin Preview..."
+            statusbar_write(message)
+            console_write("Current file in preview: " + filename + "\n")
+            # read file content
+            b = File.open(filename, "r")
+            content = b.read
+            preview_write(content)
+            store_current_file(File.join(File.dirname(filename), "newfile.ext"))
+            statusbar_write("Preview of file "+filename+" completed")
+            
+        end
+        # preview write
+        def preview_write(message)
+            preview = @builder.get_object("previewBuffer")
+            preview.text = message
         end
         
         # Clear the text shown in the preview testview
-        def clear_preview()
-            @preview = @builder.get_object("previewBuffer")
-            @preview.text = ""
+        def preview_clear()
+            preview = @builder.get_object("previewBuffer")
+            preview.text = ""
         end
         
         # Show a code preview based on GUI settings
         def codePreview()
-            @preview = @builder.get_object("previewBuffer")
             cr = Cosb::CsoundRenderer.new( @spaceConfigFilenameEntry.text, @globConfigFilenameEntry.text)
-            @preview.text = cr.render
+            preview_write(cr.render)
         end
         
         # Saves Csound generated code in a file
@@ -67,56 +101,7 @@ module Cosb
             end
         end
         
-        # Show openfile dialog window
-        def fileChooser_show()
-            @filechooserdialog1 = @builder.get_object("filechooserdialog1")
-            puts(@filechooserdialog1.to_s)
-            if @filechooserdialog1.destroyed?
-                puts("creo oggetto")
-                
 
-                @filechooserdialog1 = @builder.get_object("filechooserdialog1")
-                @filechooserdialog1.show
-            else
-                puts("rilevo oggetto dal builder")
-                @filechooserdialog1.show
-            end
-        end
-        
-        # Hide openfile dialog window
-        def fileChooserHide()
-            @filechooserdialog1.hide
-        end
-        
-        # Show global config file content in preview window
-        def globConfigViewButton_action()
-            
-            message = "Generatin Preview..."
-            statusbar_write(message)
-            
-            b = File.open(@globConfigFilenameEntry.text, "r")
-            content = b.read
-            @preview = @builder.get_object("previewBuffer")
-            @preview.text = content
-            
-            statusbar_write("Preview of file "+@globConfigFilenameEntry.text+" completed")
-            
-        end
-        
-        # Show space config file content in preview window
-        def spaceConfigViewButton_action()
-            
-            message = "Generatin Preview..."
-            statusbar_write(message)
-            
-            b = File.open(@spaceConfigFilenameEntry.text, "r")
-            content = b.read
-            @preview = @builder.get_object("previewBuffer")
-            @preview.text = content
-            
-            statusbar_write("Preview of file "+@spaceConfigFilenameEntry.text+" completed")
-            
-        end
         
     end
     
