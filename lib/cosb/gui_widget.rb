@@ -38,6 +38,8 @@ module Cosb
             @singleSpeakerTemplateFilenameEntry.text = File.basename(@cr.templates[:single_speaker].to_s)
             @reverbAndOutputTemplateFilenameEntry = @builder.get_object("reverbAndOutputTemplateFilenameEntry")
             @reverbAndOutputTemplateFilenameEntry.text = File.basename(@cr.templates[:reverb_and_output].to_s)
+            # buttons explicit
+            @synchk = @builder.get_object("synchk") 
         end
         
         # Set the current entry text object to modify to global config
@@ -56,6 +58,7 @@ module Cosb
             
             filename = @globConfigFilenameEntry.text
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         
@@ -64,6 +67,7 @@ module Cosb
             
             filename = @spaceConfigFilenameEntry.text
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         
@@ -76,6 +80,7 @@ module Cosb
                 filename = @cr.templates[:header].to_s
             end
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         
@@ -88,6 +93,7 @@ module Cosb
                 filename = @cr.templates[:sound_source]
             end
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         
@@ -100,6 +106,7 @@ module Cosb
             end
 
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         
@@ -113,6 +120,7 @@ module Cosb
             end
             
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
 
@@ -125,6 +133,7 @@ module Cosb
             end
             
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
 
@@ -136,6 +145,7 @@ module Cosb
                 filename = @cr.templates[:single_speaker]
             end            
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
 
@@ -148,6 +158,7 @@ module Cosb
             end   
             filename = @cr.templates[:reverb_and_output]
             preview_init(filename)
+            @synchk.sensitive = false
             
         end
         

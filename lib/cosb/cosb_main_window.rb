@@ -4,17 +4,18 @@
 #  Author:  Daniele Scarano
 #
 
-
 require 'gtk2'
 
 require File.expand_path(File.dirname(__FILE__) + '/gui_widget.rb')
 require File.expand_path(File.dirname(__FILE__) + '/gui_dialog.rb')
+require File.expand_path(File.dirname(__FILE__) + '/gui_menu.rb')
 
 module Cosb
 =begin rdoc
   === GUI for cosb
   The code is built on GTK2 API
   Defines general behaviour of Cosbgui object
+  Contains methods and costants Cosb main window related
 =end
     class Cosbgui
         
@@ -51,12 +52,26 @@ module Cosb
         # this method outputs information about current operation in console view
         def console_write(message)
             console = @builder.get_object("consoleBuffer")
-            console.text += message
+            console.text += "\n"+message
+        end
+        
+        def console_clear()
+            console = @builder.get_object("consoleBuffer")
+            console.text = ""
         end
         
         def store_current_file(text)
             @tempBuffer = @builder.get_object("tempBuffer")
             @tempBuffer.text = text 
+        end
+        
+        def tempbuffer_check()
+            if ! @tempBuffer; @tempBuffer = @builder.get_object("tempBuffer"); end
+        end
+        
+        def tempbuffer_clear()
+            if ! @tempBuffer; @tempBuffer = @builder.get_object("tempBuffer"); end
+            @tempBuffer.text = ""
         end
         
         # initialize preview contest
@@ -70,7 +85,7 @@ module Cosb
             content = b.read
             preview_write(content)
             store_current_file(File.join(File.dirname(filename), "newfile.ext"))
-            statusbar_write("Preview of file "+filename+" completed")
+            console_write("Preview of file " + filename + " completed")
             
         end
         # preview write
@@ -83,25 +98,28 @@ module Cosb
         def preview_clear()
             preview = @builder.get_object("previewBuffer")
             preview.text = ""
+            tempbuffer_check()
+            @synchk.sensitive = false
+            
         end
         
         # Show a code preview based on GUI settings
         def codePreview()
             cr = Cosb::CsoundRenderer.new( @spaceConfigFilenameEntry.text, @globConfigFilenameEntry.text)
             preview_write(cr.render)
+            store_current_file(Cosb::Configuration::DEFAULT_OUTPUT_FILE)
+            @synchk.sensitive = true
         end
         
         # Saves Csound generated code in a file
-        def saveOrchestraFile()
-            outFile = File.new(Configuration::DEFAULT_OUTPUT_FILE, "w+")
-            if outFile
+        def saveFile(infile, content)
+            if infile
+                outfile = File.new(infile, "w")
                 cr = Cosb::CsoundRenderer.new( @spaceConfigFilenameEntry.text, @globConfigFilenameEntry.text)
-                outFile.syswrite(cr.render)
-                puts "File written"
+                outfile.syswrite(content)
+                console_write("Orchestra File written: " + infile)
             end
         end
-        
-
         
     end
     
