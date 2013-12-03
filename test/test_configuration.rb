@@ -49,9 +49,9 @@ class TestConfiguration < Test::Unit::TestCase
   end
 
 	def test_number_of_output_channels
-    assert Cosb::Configuration.load(@correct_space_config_file, @correct_global_config_file)
-		assert num_channels_should_be = @correct_space_config['space']['loudspeaker_positions'].keys.size * 2
-		assert_equal num_channels_should_be, Cosb::Configuration.instance.space_configuration.num_channels
+            assert Cosb::Configuration.load(@correct_space_config_file, @correct_global_config_file)
+	    assert num_channels_should_be = @correct_space_config['space']['loudspeaker_positions'].keys.size * 2
+	    assert_equal num_channels_should_be, Cosb::Configuration.instance.space_configuration.num_channels
 	end
 
 end

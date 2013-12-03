@@ -42,6 +42,23 @@ module Cosb
             @synchk = @builder.get_object("synchk") 
         end
         
+        def header_form_update()
+            gcf = @globConfigFilenameEntry.text
+            scf = @spaceConfigFilenameEntry.text
+
+            @configuration = Configuration.instance
+	    @configuration.load(scf, gcf)
+	    
+            # Rewrite header values from loaded configuration file
+            console_write("Reading New Configuration loaded...... updating Header Values")	    
+	    @srEntry.text = @configuration.global_configuration.sample_rate.to_s
+            @ksmpsEntry.text = @configuration.global_configuration.ksmps.to_s
+            @asEntry.text = @configuration.global_configuration.audio_sources.to_s
+            @smEntry.text = @configuration.global_configuration.simultaneous_movements.to_s
+            @rdEntry.text = @configuration.space_configuration.reverberation_decay.to_s
+            @chNumberEntry.text = @configuration.space_configuration.num_channels.to_s
+        end
+        
         # Set the current entry text object to modify to global config
         def globalConfigFileEntry()
             @this_entry = @builder.get_object("globConfigFilenameEntry")
@@ -265,6 +282,7 @@ module Cosb
             @this_entry.text = File.basename(@cr.templates[:reverb_and_output])
             
         end
+
         
     end
 end

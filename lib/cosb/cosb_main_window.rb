@@ -19,6 +19,9 @@ module Cosb
 =end
     class Cosbgui
         
+        DEFAULT_TITLE = "COSB Csound Orchestra Spatialize Builder"
+        DEFAULT_PROJECT_DIR = File.join(Cosb::ROOT_PATH, "projects/")
+        
         # Initialization of main window using gtk2 xml glade file 
         def initialize(window_path)
         
@@ -115,10 +118,14 @@ module Cosb
         def saveFile(infile, content)
             if infile
                 outfile = File.new(infile, "w")
-                cr = Cosb::CsoundRenderer.new( @spaceConfigFilenameEntry.text, @globConfigFilenameEntry.text)
                 outfile.syswrite(content)
-                console_write("Orchestra File written: " + infile)
+                console_write("File written: " + infile)
             end
+        end
+        
+        def gui_project
+            @currprj = Cosb::Project.new()
+            self.project_dialog
         end
         
     end

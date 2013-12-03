@@ -42,5 +42,18 @@ module Cosb
             end
             File.delete(infile)
         end
+        
+    end
+    
+    class Project < Cosbgui
+        def initialize
+            puts(create_project)
+        end
+        
+        # create project directory
+        def create_project
+
+        end
+        
     end
 end
