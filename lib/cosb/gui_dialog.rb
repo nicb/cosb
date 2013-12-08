@@ -22,14 +22,19 @@ module Cosb
                 [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
                 [ Gtk::Stock::SAVE, Gtk::Dialog::RESPONSE_ACCEPT ]
             )
-            dialog.filename = @tempBuffer.text
+            # aggiungere project dir
+            if @currprj.nil?
+                dialog.filename = @tempBuffer.text
+            else
+                dialog.filename = @currprj.project_dir.to_s + "/deffile"
+            end
             dialog.signal_connect('response') do |w, r|
                 odg = case r
                     when Gtk::Dialog::RESPONSE_ACCEPT
                         filename = dialog.filename
                         preview = @builder.get_object("previewBuffer")
                         content = preview.text
-                        console_write("Saving Orchestra File: "+filename)
+                        console_write("Saving File: "+filename)
                         saveFile(filename, content)
                     when Gtk::Dialog::RESPONSE_CANCEL;   console_write("'CANCEL' Activity interrupted by user action")
                         else; console_write("Undefined response ID; perhaps Close-x? (#{r})")
@@ -52,6 +57,9 @@ module Cosb
                 [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
                 [ Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT ]
             )
+            if ! @currprj.nil?
+                dialog.filename = @currprj.project_dir.to_s + "/deffile"
+            end
             dialog.signal_connect('response') do |w, r|
                 odg = case r
                     when Gtk::Dialog::RESPONSE_ACCEPT
@@ -107,10 +115,10 @@ module Cosb
             if @prjdialog.destroyed?
                 puts("creo oggetto")
                 @prjdialog = @builder.get_object("projectDialog")
-                @prjdialog.show
+#                @prjdialog.show
             else
                 puts("rilevo oggetto dal builder")
-                @prjdialog.show
+#                @prjdialog.show
             end
             @prjdialog.show
             @projectNameEntry = @builder.get_object("projectNameEntry")
@@ -124,6 +132,7 @@ module Cosb
             dirname = File.join(Cosb::Cosbgui::DEFAULT_PROJECT_DIR,  @projectNameEntry.text)
             if ! Dir.exist?(dirname)
                 Dir.mkdir(dirname)
+                @currprj.project_dir = dirname
                 currtitle = @cosb_main_window.title
                 @cosb_main_window.title = Cosb::Cosbgui::DEFAULT_TITLE + " - Project [" + @projectNameEntry.text + "]"
                 self.project_dialog_hide
@@ -134,6 +143,38 @@ module Cosb
             end
             #prjdir = Dir.new(dirname)
             #puts(File.join(Cosb::ROOT_PATH, @projectNameEntry.text))
+        end
+        
+        def project_select
+                        
+            @this_entry = @builder.get_object("tempBuffer")
+            dialog = Gtk::FileChooserDialog.new(
+                "Open File ...",
+                nil,
+                Gtk::FileChooser::ACTION_SELECT_FOLDER,
+                nil,
+                [ Gtk::Stock::CANCEL, Gtk::Dialog::RESPONSE_CANCEL ],
+                [ Gtk::Stock::OPEN, Gtk::Dialog::RESPONSE_ACCEPT ]
+            )
+            dialog.filename = Cosb::Cosbgui::DEFAULT_PROJECT_DIR
+            dialog.signal_connect('response') do |w, r|
+                odg = case r
+                    when Gtk::Dialog::RESPONSE_ACCEPT
+                        dirname = dialog.filename
+                        preview = @builder.get_object("previewBuffer")
+                        # new
+                        @currprj = Cosb::Project.new()
+                        @currprj.project_dir = dirname
+                        console_write("Selected project: "+dirname)
+                        @cosb_main_window.title = Cosb::Cosbgui::DEFAULT_TITLE + " - Project [" + File.basename(dirname) + "]"
+                    when Gtk::Dialog::RESPONSE_CANCEL;   console_write("'CANCEL' Activity interrupted by user action")
+                        else; console_write("Undefined response ID; perhaps Close-x? (#{r})")
+                end
+                puts odg
+                dialog.destroy
+            end
+            dialog.run
+            
         end
         
     end

@@ -1,6 +1,6 @@
 = cosb
 
-* https://svn.sme-ccppd.org/svn/cosb
+* https://github.com/hellska/cosb
 
 == DESCRIPTION:
 

@@ -46,6 +46,9 @@ module Cosb
     end
     
     class Project < Cosbgui
+        
+        attr_accessor :project_dir
+        
         def initialize
             puts(create_project)
         end
