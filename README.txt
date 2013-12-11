@@ -36,7 +36,7 @@ gem requirements.
 
 == DEVELOPERS:
 
-After checking out the source, run:
+After checking out the source, position inside the directory containing the software and run:
 
   $ rake newb
 
@@ -65,4 +65,4 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 == README VERSION:
 
-$Id: README.txt 2 2012-05-14 09:18:25Z nicb $
+Daniele Scarano (Dom  8 Dic 2013 16:13:48 CET)
