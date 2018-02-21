@@ -22,7 +22,7 @@ features, and so on. You are welcome to contribute.*
 
 1. clone [the repository](https://github.com/nicb/cosb)
 1. `cd cosb`
-1. (`rvm current` should now show `ruby-2.3.0@prometeo-sacd`)
+1. (`rvm current` should now show `ruby-2.4.2@prometeo-sacd`)
 1. `gem install bundler`
 1. `bundle install`
 
