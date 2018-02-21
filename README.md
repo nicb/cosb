@@ -1,8 +1,8 @@
-= cosb
+# cosb
 
 * https://github.com/nicb/cosb
 
-== DESCRIPTION:
+## DESCRIPTION:
 
 `cosb` --- Csound Orchestra Spatializer Builder
 
@@ -13,12 +13,12 @@ a configuration file for the physical location, the setup and the virtual
 location and create the appropriate orchestra instruments in order to
 play with the wanted space.
 
-== FEATURES/PROBLEMS:
+## FEATURES/PROBLEMS:
 
 *This code is brand new. As such, it is certainly full of bugs, missing
 features, and so on. You are welcome to contribute.*
 
-== INSTALLATION
+## INSTALLATION
 
 1. clone [the repository](https://github.com/nicb/cosb)
 1. `cd cosb`
@@ -26,24 +26,24 @@ features, and so on. You are welcome to contribute.*
 1. `gem install bundler`
 1. `bundle install`
 
-== SYNOPSIS:
+## SYNOPSIS:
 
   `cosb [-s] [-c config]`
 
 	* -s : separates the reverb output from the direct one
 	* -c : read file +<config>+
 
-== REQUIREMENTS:
+## REQUIREMENTS:
 
 1. `rvm`: please use [`rvm`](https://rvm.io). Upon entering the `cosb`
    directory it should automatically set the proper gemset for you
 1. Install the bundler gem (see [above](#INSTALLATION)), then run bundle install and this will fix all gem requirements.
 
-== INSTALL:
+## INSTALL:
 
 <tt>rake install</tt>
 
-== DEVELOPERS:
+## DEVELOPERS:
 
 After checking out the source, position inside the directory containing the software and run:
 
@@ -52,7 +52,7 @@ After checking out the source, position inside the directory containing the soft
 This task will install any missing dependencies, run the tests/specs,
 and generate the RDoc.
 
-== LICENSE:
+## LICENSE:
 
 GPL 2.0
 
@@ -72,7 +72,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-== README VERSION:
+## README VERSION:
 
 Nicola Bernardini (Wed Feb 21 04:56:06 CET 2018)
 Daniele Scarano (Dom  8 Dic 2013 16:13:48 CET)
