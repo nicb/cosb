@@ -1,7 +1,7 @@
 #
 # $Id: test_csound_renderer.rb 3 2012-05-15 03:21:07Z nicb $
 #
-require File.dirname(__FILE__) + '/test_helper.rb'
+require File.expand_path(File.join('..', 'test_helper'), __FILE__)
 
 class TestConfiguration < Test::Unit::TestCase
 

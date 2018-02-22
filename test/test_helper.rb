@@ -1,3 +1,3 @@
 require 'stringio'
 require 'test/unit'
-require File.dirname(__FILE__) + '/../lib/cosb'
+require File.expand_path(File.join('..', 'lib', 'cosb'), __FILE__)
