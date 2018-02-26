@@ -4,7 +4,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 require 'yaml'
 
-class TestConfiguration < Test::Unit::TestCase
+class TestConfiguration < Minitest::Test
 
   def setup
 		@correct_global_config_file = File.join(File.dirname(__FILE__), 'fixtures', 'correct_global_config.yml')

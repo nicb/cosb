@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
-class TestCosb < Test::Unit::TestCase
+class TestCosb < Minitest::Test
 
   def setup
   end

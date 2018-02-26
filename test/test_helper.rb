@@ -1,3 +1,4 @@
-require 'stringio'
-require 'test/unit'
-require File.expand_path(File.join('..', 'lib', 'cosb'), __FILE__)
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "cosb"
+
+require "minitest/autorun"

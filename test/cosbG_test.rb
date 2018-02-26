@@ -3,7 +3,7 @@
 #  Created on 2013-09-03.
 #  Author:  Daniele Scarano
 
-class TestcosbG < Test::Unit::TestCase
+class TestcosbG < Minitest::Test
 
   def setup
     @cosbG_main_window = File.expand_path(File.dirname(__FILE__) + "/../gui/windows/cosbGuiMainWindow.glade")

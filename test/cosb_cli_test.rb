@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), "test_helper.rb")
 require 'cosb/cli'
 
-class TestCosbCli < Test::Unit::TestCase
+class TestCosbCli < Minitest::Test
   
   def setup
 		@correct_global_config_file = File.join(File.dirname(__FILE__), 'fixtures', 'correct_global_config.yml')

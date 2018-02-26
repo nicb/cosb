@@ -3,7 +3,7 @@
 #
 require File.expand_path(File.join('..', 'test_helper'), __FILE__)
 
-class TestConfiguration < Test::Unit::TestCase
+class TestConfiguration < Minitest::Test
 
   def test_csound_renderer
 		assert cr = Cosb::CsoundRenderer.new(Cosb::Configuration::DEFAULT_SPACE_CONFIGURATION, Cosb::Configuration::DEFAULT_GLOBAL_CONFIGURATION)
