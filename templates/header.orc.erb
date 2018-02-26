@@ -6,18 +6,18 @@
 ;
 ; Created from the following configuration files:
 ;
-; global: <%= cr.configuration.global_configuration.filename %>
-; space:  <%= cr.configuration.space_configuration.filename %>
+; global: <%= _cr.configuration.global_configuration.filename %>
+; space:	<%= _cr.configuration.space_configuration.filename %>
 ; templates:
-<%= cr.list_templates(';   ').join("\n") %>
+<%= _cr.list_templates(';		').join("\n") %>
 ;
-          sr = <%= cr.configuration.global_configuration.sample_rate %>
-       ksmps = <%= cr.configuration.global_configuration.ksmps %>
-      nchnls = <%= cr.configuration.space_configuration.num_channels %>
+			sr = <%= _cr.configuration.global_configuration.sample_rate %>
+			ksmps = <%= _cr.configuration.global_configuration.ksmps %>
+			nchnls = <%= _cr.configuration.space_configuration.num_channels %>
 
 
-      givel  init 344 ; speed of sound at normal temperatures
-             zakinit <%= cr.number_of_zak_a_variables %>, <%= cr.number_of_zak_k_variables %>
+			givel	 init 344 ; speed of sound at normal temperatures
+			zakinit <%= _cr.number_of_zak_a_variables %>, <%= _cr.number_of_zak_k_variables %>
 ;
 ;
 ;

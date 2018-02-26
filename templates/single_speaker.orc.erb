@@ -2,49 +2,49 @@
         ; $Id: single_speaker.orc.erb 16 2013-04-19 20:43:38Z nicb $
         ;
         ;
-        ; output index parameters for speaker <%= s.number %>
+        ; output index parameters for speaker <%= _s.number %>
         ;
-        idiroutput<%= s.number %> init <%= s.direct_output_bus %>
-        irevoutput<%= s.number %> init <%= s.reverb_output_bus %>
+        idiroutput<%= _s.number %> init <%= _s.direct_output_bus %>
+        irevoutput<%= _s.number %> init <%= _s.reverb_output_bus %>
         ;
-        ; positional parameters for speaker <%= s.number %>
+        ; positional parameters for speaker <%= _s.number %>
         ;
-        kxsp<%= s.number %>  = kx-ixsp<%= s.number %>
-        kysp<%= s.number %>  = ky-iysp<%= s.number %>
-        kxsp<%= s.number %>q = kxsp<%= s.number %>*kxsp<%= s.number %>
-        kysp<%= s.number %>q = kysp<%= s.number %>*kysp<%= s.number %>
+        kxsp<%= _s.number %>  = kx-ixsp<%= _s.number %>
+        kysp<%= _s.number %>  = ky-iysp<%= _s.number %>
+        kxsp<%= _s.number %>q = kxsp<%= _s.number %>*kxsp<%= _s.number %>
+        kysp<%= _s.number %>q = kysp<%= _s.number %>*kysp<%= _s.number %>
         ;
         ; direct signal distance calculation
         ;
-        ksp<%= s.number %>d  = sqrt(kxsp<%= s.number %>q+kysp<%= s.number %>q) ; dist dir -> sp<%= s.number %>
+        ksp<%= _s.number %>d  = sqrt(kxsp<%= _s.number %>q+kysp<%= _s.number %>q) ; dist dir -> sp<%= _s.number %>
         ;
         ; first order reflection distance calculations
         ;
-        ksp<%= s.number %>w1 = sqrt(kxsp<%= s.number %>q+kw1sq) ; dist ref w1 -> sp<%= s.number %>
-        ksp<%= s.number %>w2 = sqrt(kxsp<%= s.number %>q+kw2sq) ; dist ref w2 -> sp<%= s.number %>
-        ksp<%= s.number %>w3 = sqrt(kxsp<%= s.number %>q+kw3sq) ; dist ref w3 -> sp<%= s.number %>
-        ksp<%= s.number %>w4 = sqrt(kxsp<%= s.number %>q+kw4sq) ; dist ref w4 -> sp<%= s.number %>
+        ksp<%= _s.number %>w1 = sqrt(kxsp<%= _s.number %>q+kw1sq) ; dist ref w1 -> sp<%= _s.number %>
+        ksp<%= _s.number %>w2 = sqrt(kxsp<%= _s.number %>q+kw2sq) ; dist ref w2 -> sp<%= _s.number %>
+        ksp<%= _s.number %>w3 = sqrt(kxsp<%= _s.number %>q+kw3sq) ; dist ref w3 -> sp<%= _s.number %>
+        ksp<%= _s.number %>w4 = sqrt(kxsp<%= _s.number %>q+kw4sq) ; dist ref w4 -> sp<%= _s.number %>
         ;
         ; delays
         ;
-        kdelsp<%= s.number %>d   port ksp<%= s.number %>d/givel,0.1    ; direct sound
-        kdelsp<%= s.number %>w1  port ksp<%= s.number %>w1/givel,0.1   ; wall 1 reflection
-        kdelsp<%= s.number %>w2  port ksp<%= s.number %>w2/givel,0.1   ; wall 2 reflection
-        kdelsp<%= s.number %>w3  port ksp<%= s.number %>w3/givel,0.1   ; wall 3 reflection
-        kdelsp<%= s.number %>w4  port ksp<%= s.number %>w4/givel,0.1   ; wall 4 reflection
+        kdelsp<%= _s.number %>d   port ksp<%= _s.number %>d/givel,0.1    ; direct sound
+        kdelsp<%= _s.number %>w1  port ksp<%= _s.number %>w1/givel,0.1   ; wall 1 reflection
+        kdelsp<%= _s.number %>w2  port ksp<%= _s.number %>w2/givel,0.1   ; wall 2 reflection
+        kdelsp<%= _s.number %>w3  port ksp<%= _s.number %>w3/givel,0.1   ; wall 3 reflection
+        kdelsp<%= _s.number %>w4  port ksp<%= _s.number %>w4/givel,0.1   ; wall 4 reflection
         ;
         ; signal management
         ;
-        asp<%= s.number %>d      deltapi kdelsp<%= s.number %>d        ; direct signal -> sp <%= s.number %>
-        asp<%= s.number %>w1     deltapi kdelsp<%= s.number %>w1       ; ref    w1     -> sp <%= s.number %>
-        asp<%= s.number %>w2     deltapi kdelsp<%= s.number %>w2       ; ref    w2     -> sp <%= s.number %>
-        asp<%= s.number %>w3     deltapi kdelsp<%= s.number %>w3       ; ref    w3     -> sp <%= s.number %>
-        asp<%= s.number %>w4     deltapi kdelsp<%= s.number %>w4       ; ref    w4     -> sp <%= s.number %>
+        asp<%= _s.number %>d      deltapi kdelsp<%= _s.number %>d        ; direct signal -> sp <%= _s.number %>
+        asp<%= _s.number %>w1     deltapi kdelsp<%= _s.number %>w1       ; ref    w1     -> sp <%= _s.number %>
+        asp<%= _s.number %>w2     deltapi kdelsp<%= _s.number %>w2       ; ref    w2     -> sp <%= _s.number %>
+        asp<%= _s.number %>w3     deltapi kdelsp<%= _s.number %>w3       ; ref    w3     -> sp <%= _s.number %>
+        asp<%= _s.number %>w4     deltapi kdelsp<%= _s.number %>w4       ; ref    w4     -> sp <%= _s.number %>
 
-        alpfsp<%= s.number %>w3  tone    asp<%= s.number %>w3, iw3cutoff ; lpf filter on back wall reflections
+        alpfsp<%= _s.number %>w3  tone    asp<%= _s.number %>w3, iw3cutoff ; lpf filter on back wall reflections
 
-        asp<%= s.number %>     = ((asp<%= s.number %>d/ksp<%= s.number %>d)+(asp<%= s.number %>w1/ksp<%= s.number %>w1)+(asp<%= s.number %>w2/ksp<%= s.number %>w2)+(asp<%= s.number %>w3/ksp<%= s.number %>w3)+(asp<%= s.number %>w4/ksp<%= s.number %>w4))
-        arevsp<%= s.number %>  = iattarev*((asp<%= s.number %>d/sqrt(ksp<%= s.number %>d))+(asp<%= s.number %>w1/sqrt(ksp<%= s.number %>w1))+(asp<%= s.number %>w2/sqrt(ksp<%= s.number %>w2))+(asp<%= s.number %>w3/sqrt(ksp<%= s.number %>w3))+(asp<%= s.number %>w4/sqrt(ksp<%= s.number %>w4)))
+        asp<%= _s.number %>     = ((asp<%= _s.number %>d/ksp<%= _s.number %>d)+(asp<%= _s.number %>w1/ksp<%= _s.number %>w1)+(asp<%= _s.number %>w2/ksp<%= _s.number %>w2)+(asp<%= _s.number %>w3/ksp<%= _s.number %>w3)+(asp<%= _s.number %>w4/ksp<%= _s.number %>w4))
+        arevsp<%= _s.number %>  = iattarev*((asp<%= _s.number %>d/sqrt(ksp<%= _s.number %>d))+(asp<%= _s.number %>w1/sqrt(ksp<%= _s.number %>w1))+(asp<%= _s.number %>w2/sqrt(ksp<%= _s.number %>w2))+(asp<%= _s.number %>w3/sqrt(ksp<%= _s.number %>w3))+(asp<%= _s.number %>w4/sqrt(ksp<%= _s.number %>w4)))
 
-                  zawm asp<%= s.number %>, idiroutput<%= s.number %>
-                  zawm arevsp<%= s.number %>, irevoutput<%= s.number %>
+                  zawm asp<%= _s.number %>, idiroutput<%= _s.number %>
+                  zawm arevsp<%= _s.number %>, irevoutput<%= _s.number %>

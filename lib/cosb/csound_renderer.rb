@@ -132,7 +132,7 @@ module Cosb
 			erb_obj = ERB.new(string_template)
 			self.configuration.space_configuration.loudspeaker_positions.each do
 				|sp|
-				s = sp # the "s" variable is needed by the template
+				_s = sp # the "_s" variable is needed by the template
 				b = binding
 				res += erb_obj.result(b)
 			end
@@ -156,12 +156,12 @@ module Cosb
 		end
 
 		def render_any(t)
-			cr = self
+			_cr = self
 			lines = nil
 			File.open(self.templates[t], 'r') { |fh| lines = fh.readlines }
 			string_template = lines.join
 			b = binding
-			output = ERB.new(string_template).result(b)
+			ERB.new(string_template).result(b)
 		end
 
 	end

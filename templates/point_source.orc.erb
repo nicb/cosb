@@ -5,11 +5,11 @@
 ; POINT-SOURCE ROOM INSTRUMENTS
 ;----------------------------------------------
 ;
-instr <%= cr.point_source_instrument_numbers %>
+instr <%= _cr.point_source_instrument_numbers %>
 ;
 ; input indexings
 ;
-        ifirst     init <%= cr.first_point_source_instrument %> ; first instrument number
+        ifirst     init <%= _cr.first_point_source_instrument %> ; first instrument number
         index      init p1 - ifirst ; audio channel (mono)
         iparoffset init index * 2   ; data structure is { x, y }
         ixindex    init iparoffset
@@ -37,7 +37,7 @@ instr <%= cr.point_source_instrument_numbers %>
         ; inner and outer room definitions
         ;
         ideltaf   init 20000                   ; should be around the threshold of hearing
-<%= cr.room_definition %>
+<%= _cr.room_definition %>
         ;
         ; front/back filtering
         ;
@@ -64,7 +64,7 @@ instr <%= cr.point_source_instrument_numbers %>
 
         adeld   delayr    1   ; maximum delay: 1 second (more than enough)
 
-<%= cr.point_sources %>
+<%= _cr.point_sources %>
 
                 delayw    audio
 

@@ -4,9 +4,9 @@
 ;
 ; input instruments
 ;
-         instr     <%= cr.input_instrument_numbers %>
+         instr     <%= _cr.input_instrument_numbers %>
 
-         ifirst    init      <%= cr.first_input_instrument %>
+         ifirst    init      <%= _cr.first_input_instrument %>
          index     init      p1 - ifirst ; audio channel (mono)
          iamp      =         ampdb(p4)
          idur      =         p3

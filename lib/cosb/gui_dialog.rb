@@ -11,9 +11,13 @@ module Cosb
         def fileChooserHide()
             @filechooserdialog1.hide
         end
+
+        def clear_preview()
+          # TODO
+        end
         
         # Show save fiel dialog
-        def file_save_dialog ()
+        def file_save_dialog()
             dialog = Gtk::FileChooserDialog.new(
                 "Save File As ...",
                 nil,
@@ -64,7 +68,7 @@ module Cosb
                 odg = case r
                     when Gtk::Dialog::RESPONSE_ACCEPT
                         filename = dialog.filename
-                        preview = @builder.get_object("previewBuffer")
+                        @builder.get_object("previewBuffer")
                         lines = nil
                         console_write("Opened File: "+filename)
                         File.open(filename, 'r') { |fh| lines = fh.readlines }
@@ -133,7 +137,6 @@ module Cosb
             if ! Dir.exist?(dirname)
                 Dir.mkdir(dirname)
                 @currprj.project_dir = dirname
-                currtitle = @cosb_main_window.title
                 @cosb_main_window.title = Cosb::Cosbgui::DEFAULT_TITLE + " - Project [" + @projectNameEntry.text + "]"
                 self.project_dialog_hide
             else
@@ -161,7 +164,7 @@ module Cosb
                 odg = case r
                     when Gtk::Dialog::RESPONSE_ACCEPT
                         dirname = dialog.filename
-                        preview = @builder.get_object("previewBuffer")
+                        @builder.get_object("previewBuffer")
                         # new
                         @currprj = Cosb::Project.new()
                         @currprj.project_dir = dirname

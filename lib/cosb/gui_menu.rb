@@ -29,7 +29,7 @@ module Cosb
             infile = tempf.path
             tempf.close
             console_write("Checking Syntax on temporary file "+infile)
-            stdout,stderr,status = Open3.capture3("csound --syntax-check-only "+infile)
+            _stdout,stderr,status = Open3.capture3("csound --syntax-check-only "+infile)
             if status.success?
                 console_write(stderr)
                 console_write("Syntax Correct!")

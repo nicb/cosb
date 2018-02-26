@@ -4,7 +4,7 @@
         ; By default, only single-segment (static positioning) movements are defined.
         ; Use the '-m' option to substitute this template with one of yours.
         ;
-        instr <%= cr.list_numbers(301, 301 + cr.configuration.global_configuration.simultaneous_movements) %>
+        instr <%= _cr.list_numbers(301, 301 + _cr.configuration.global_configuration.simultaneous_movements) %>
 
         ifirst      init     301
         index       init     p1 - ifirst

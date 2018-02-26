@@ -3,17 +3,17 @@
         ;
         ; inner room definition
         ;
-  <% cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
+  <% _cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
         ixsp<%= sp.number %> init <%= sp.x %>  ; x coordinate (in m) for speaker n. <%= sp.number %>
         iysp<%= sp.number %> init <%= sp.y %>  ; y coordinate (in m) for speaker n. <%= sp.number %>
   <% end %>
         ;
         ; outer room definition
         ;
-        ixmax  init <%= cr.configuration.space_configuration.virtual_space.width.to_f / 2.0 %>
-        ixmin  init <%= -(cr.configuration.space_configuration.virtual_space.width.to_f / 2.0) %>
-        iymax  init <%= cr.configuration.space_configuration.virtual_space.depth.to_f / 2.0 %>
-        iymin  init <%= -(cr.configuration.space_configuration.virtual_space.depth.to_f / 2.0) %>
+        ixmax  init <%= _cr.configuration.space_configuration.virtual_space.width.to_f / 2.0 %>
+        ixmin  init <%= -(_cr.configuration.space_configuration.virtual_space.width.to_f / 2.0) %>
+        iymax  init <%= _cr.configuration.space_configuration.virtual_space.depth.to_f / 2.0 %>
+        iymin  init <%= -(_cr.configuration.space_configuration.virtual_space.depth.to_f / 2.0) %>
         ix     init ixmax
         iy     init iymax
         ;

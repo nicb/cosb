@@ -16,7 +16,7 @@ module Cosb
       }
       mandatory_options = %w(  )
 
-      parser = OptionParser.new do |opts|
+      OptionParser.new do |opts|
         opts.banner = <<-BANNER.gsub(/^          /,'')
 				  
           cosb is a generator of  orchestra  instruments  for  csound  to  run
