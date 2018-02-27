@@ -8,11 +8,12 @@ module Cosb
     def self.execute(stdout, arguments=[])
 
       options = {
-        :space               => Configuration::DEFAULT_SPACE_CONFIGURATION,
-        :global              => Configuration::DEFAULT_GLOBAL_CONFIGURATION,
-	:sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
+        :config_root         => Configuration::DEFAULT_CONFIGURATION_ROOT,
+        :space               => Configuration::DEFAULT_SPACE_CONFIGURATION_FILE,
+        :global              => Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE,
+	      :sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
         :movements           => CsoundRenderer::DEFAULT_TEMPLATES[:movements],
-	:reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
+	      :reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
       }
       mandatory_options = %w(  )
 
@@ -31,12 +32,15 @@ module Cosb
           Options are:
         BANNER
         opts.separator ""
+        opts.on("-c", "--config PATH", String,
+                "Set PATH as a configuration root folder",
+                "Default: #{Configuration::DEFAULT_CONFIGURATION_ROOT}") { |arg| options[:config_root] = arg }
         opts.on("-s", "--space FILE", String,
                 "Use space configuration FILE",
-                "Default: #{Configuration::DEFAULT_SPACE_CONFIGURATION}") { |arg| options[:space] = arg }
+                "Default: #{Configuration::DEFAULT_SPACE_CONFIGURATION_FILE}") { |arg| options[:space] = arg }
         opts.on("-g", "--global FILE", String,
                 "Use global configuration FILE",
-                "Default: #{Configuration::DEFAULT_GLOBAL_CONFIGURATION}") { |arg| options[:global] = arg }
+                "Default: #{Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE}") { |arg| options[:global] = arg }
         opts.on("-i", "--sound-input TEMPLATE", String,
                 "Use sound input template TEMPLATE",
                 "Default: #{CsoundRenderer::DEFAULT_TEMPLATES[:sound_source]}") { |arg| options[:sound_input] = arg }
@@ -55,13 +59,14 @@ module Cosb
         end
       end
 
+      config_root          = options[:config_root]
       space_configuration  = options[:space]
       global_configuration = options[:global]
       sound_input_template = options[:sound_input]
       movements_template   = options[:movements]
       rao_template         = options[:reverb_and_output]
 
-      cr = Cosb::CsoundRenderer.new(space_configuration, global_configuration, sound_input_template, movements_template, rao_template)
+      cr = Cosb::CsoundRenderer.new(config_root, global_configuration, space_configuration, sound_input_template, movements_template, rao_template)
       stdout.puts(cr.render)
     end
   end

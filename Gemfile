@@ -14,3 +14,5 @@ gem 'hoe', '>= 3.0.5'
 gem 'rdoc'
 gem 'glib2'
 gem 'gtk2'
+
+gem 'byebug'
