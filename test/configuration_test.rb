@@ -7,14 +7,14 @@ require 'yaml'
 class TestConfiguration < Minitest::Test
 
   def setup
-		@correct_global_config_file = File.join(File.dirname(__FILE__), 'fixtures', 'correct_global_config.yml')
-		@correct_space_config_file =  File.join(File.dirname(__FILE__), 'fixtures', 'correct_space_config.yml')
-		@correct_global_config = YAML.load(File.open(@correct_global_config_file, 'r'))
-		@correct_space_config  = YAML.load(File.open(@correct_space_config_file, 'r'))
+    #
+    # +set_test_paths+ is in test_helper.rb
+    #
+    set_test_paths
   end
 
   def test_configuration_reading
-    assert Cosb::Configuration.load(@correct_space_config_file, @correct_global_config_file)
+    assert Cosb::Configuration.load(@correct_config_path, @correct_global_config_file, @correct_space_config_file)
 		assert_equal Cosb::ConfigurationFile::Global, Cosb::Configuration.instance.global_configuration.class
 		assert_equal Cosb::ConfigurationFile::Space, Cosb::Configuration.instance.space_configuration.class
 		@correct_global_config['global'].keys.each do
@@ -49,7 +49,7 @@ class TestConfiguration < Minitest::Test
   end
 
 	def test_number_of_output_channels
-            assert Cosb::Configuration.load(@correct_space_config_file, @correct_global_config_file)
+      assert Cosb::Configuration.load(@correct_config_path, @correct_global_config_file, @correct_space_config_file)
 	    assert num_channels_should_be = @correct_space_config['space']['loudspeaker_positions'].keys.size * 2
 	    assert_equal num_channels_should_be, Cosb::Configuration.instance.space_configuration.num_channels
 	end

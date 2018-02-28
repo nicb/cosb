@@ -124,8 +124,8 @@ module Cosb
 
     class << self
 
-      def load(cr = DEFAUL_CONFIGURATION_ROOT)
-        self.instance.load(cr)
+      def load(cr = DEFAULT_CONFIGURATION_ROOT, gcf = DEFAULT_GLOBAL_CONFIGURATION_FILE, scf = DEFAULT_SPACE_CONFIGURATION_FILE)
+        self.instance.load(cr, gcf, scf)
       end
 
     end

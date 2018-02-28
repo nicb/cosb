@@ -6,7 +6,7 @@ require File.expand_path(File.join('..', 'test_helper'), __FILE__)
 class TestConfiguration < Minitest::Test
 
   def test_csound_renderer
-		assert cr = Cosb::CsoundRenderer.new(Cosb::Configuration::DEFAULT_SPACE_CONFIGURATION, Cosb::Configuration::DEFAULT_GLOBAL_CONFIGURATION)
+		assert cr = Cosb::CsoundRenderer.new(Cosb::Configuration::DEFAULT_CONFIGURATION_ROOT, Cosb::Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE, Cosb::Configuration::DEFAULT_SPACE_CONFIGURATION_FILE)
 		assert out = cr.render
 		assert_match(/sr\s*=\s*#{cr.configuration.global_configuration.sample_rate}/, out)
 		assert_match(/ksmps\s*=\s*#{cr.configuration.global_configuration.ksmps}/, out)
