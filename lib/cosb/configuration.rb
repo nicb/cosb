@@ -43,12 +43,12 @@ module Cosb
 
     class Global < Base
 
-      attr_reader :sample_rate, :ksmps, :audio_sources, :simultaneous_movements, :points_per_w_object
+      attr_reader :sample_rate, :ksmps, :audio_sources, :simultaneous_movements, :points_per_w_object, :sound_speed
 
     protected
 
       def read_configuration
-        read_configuration_common('global', [:sample_rate, :ksmps, :audio_sources, :simultaneous_movements, :points_per_w_object])
+        read_configuration_common('global', [:sample_rate, :ksmps, :audio_sources, :simultaneous_movements, :points_per_w_object, :sound_speed])
       end
 
     end

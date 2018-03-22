@@ -5,15 +5,15 @@
         ;
         instr <%= Cosb::CsoundRenderer::DEFAULT_REVERB_INSTRUMENT %>
 
-        irevtc      init <%= _cr.configuration.space_configuration.reverberation_decay %>
-        irevtl      init irevtc-0.05
-        irevtr      init irevtc+0.05
+<% _cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
+        irevt<%= sp.lrc %>      init <%= _cr.configuration.space_configuration.reverberation_decay %>
+        irevtl      init irevt<%= sp.lrc %>-0.05
+        irevtr      init irevt<%= sp.lrc %>+0.05
         iatl        =    0.921         ; attenuation f_acute left
         iatr        =    0.919         ; attenuation f_acute right
-        iatc        =    0.920         ; attenuation f_acute center
+        iat<%= sp.lrc %>      =    0.920         ; attenuation f_acute center
         isiglp      =    4000          ; low-pass filtering of input signal
 
-<% _cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
         ;
         ; channel <%= sp.number %>
         ;

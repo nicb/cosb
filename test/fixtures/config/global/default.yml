@@ -20,4 +20,5 @@ global:
   ksmps:         100
   audio_sources:           100
   simultaneous_movements:  100
-  points_per_w_object:    13
+  points_per_w_object:     13
+  sound_speed:             344 # meters/second

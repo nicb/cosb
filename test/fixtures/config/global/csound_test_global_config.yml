@@ -21,3 +21,4 @@ global:
   audio_sources:           9
   simultaneous_movements:  9
   points_per_w_object:    13
+  sound_speed:             344 # meters/second

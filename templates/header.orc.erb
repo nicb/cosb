@@ -16,7 +16,7 @@
 			nchnls = <%= _cr.configuration.space_configuration.num_channels %>
 
 
-			givel	 init 344 ; speed of sound at normal temperatures
+      givel	 init <%= _cr.configuration.global_configuration.sound_speed %> ; speed of sound at normal temperatures
 			zakinit <%= _cr.number_of_zak_a_variables %>, <%= _cr.number_of_zak_k_variables %>
 ;
 ;
