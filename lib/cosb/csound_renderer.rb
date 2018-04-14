@@ -38,13 +38,14 @@ module Cosb
 
     attr_reader :configuration, :templates
 
-    def initialize(cr = Configuration::DEFAULT_CONFIGURATION_ROOT, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE, scf = Configuration::DEFAULT_SPACE_CONFIGURATION_FILE, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output])
+    def initialize(cr = Configuration::DEFAULT_CONFIGURATION_ROOT, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE, scf = Configuration::DEFAULT_SPACE_CONFIGURATION_FILE, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output], ps = DEFAULT_TEMPLATES[:point_source])
       @templates = DEFAULT_TEMPLATES.dup
       @configuration = Configuration.instance
       self.configuration.load(cr, gcf, scf)
       self.templates[:sound_source] = sst
       self.templates[:movements] = mt
       self.templates[:reverb_and_output] = rt
+      self.templates[:point_source] = ps
     end
 
     # main stage of csound code generator

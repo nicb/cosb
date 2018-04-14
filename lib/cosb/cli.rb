@@ -14,6 +14,7 @@ module Cosb
 	      :sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
         :movements           => CsoundRenderer::DEFAULT_TEMPLATES[:movements],
 	      :reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
+	      :point_source        => CsoundRenderer::DEFAULT_TEMPLATES[:point_source],
       }
       mandatory_options = %w(  )
 
@@ -47,6 +48,9 @@ module Cosb
         opts.on("-m", "--movements TEMPLATE", String,
                 "Use movements template TEMPLATE",
                 "Default: #{CsoundRenderer::DEFAULT_TEMPLATES[:movements]}") { |arg| options[:movements] = arg }
+        opts.on("-p", "--point-source TEMPLATE", String,
+                "Use point source template TEMPLATE",
+                "Default: #{CsoundRenderer::DEFAULT_TEMPLATES[:point_source]}") { |arg| options[:point_source] = arg }
         opts.on("-r", "--reverb-and-output TEMPLATE", String,
                 "Use reverb and output template TEMPLATE",
                 "Default: #{CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output]}") { |arg| options[:reverb_and_output] = arg }
@@ -65,8 +69,9 @@ module Cosb
       sound_input_template = options[:sound_input]
       movements_template   = options[:movements]
       rao_template         = options[:reverb_and_output]
+      ps_template          = options[:point_source]
 
-      cr = Cosb::CsoundRenderer.new(config_root, global_configuration, space_configuration, sound_input_template, movements_template, rao_template)
+      cr = Cosb::CsoundRenderer.new(config_root, global_configuration, space_configuration, sound_input_template, movements_template, rao_template, ps_template)
       stdout.puts(cr.render)
     end
   end
