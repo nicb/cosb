@@ -106,9 +106,12 @@ module Cosb
       res
     end
 
-    def list_numbers(start, finish)
+    def list_numbers(start, finish, step = 1)
       res = []
-      start.upto(finish) { |n| res << n.to_s }
+      while (n <= finish)
+        res << n.to_s
+        n += step
+      end
       res.join(', ')
     end
 

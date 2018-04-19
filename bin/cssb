@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+#
+
+require 'rubygems'
+require File.expand_path(File.join(['..'] * 2, 'lib', 'cssb'), __FILE__)
+
+Cssb::CLI.execute(STDOUT, ARGV)
