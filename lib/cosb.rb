@@ -11,6 +11,7 @@ require File.expand_path(File.join('..', 'cosb', 'constants'), __FILE__)
 	exceptions
 	virtual_space
 	speaker
+  sources
 	configuration
 	csound_renderer
 	cli

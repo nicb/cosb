@@ -108,6 +108,7 @@ module Cosb
 
     def list_numbers(start, finish, step = 1)
       res = []
+      n = start
       while (n <= finish)
         res << n.to_s
         n += step
