@@ -30,5 +30,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 12.3.0"
+  spec.add_development_dependency 'rspec'
   spec.add_development_dependency "minitest", "~> 5.0"
 end

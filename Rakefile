@@ -2,6 +2,8 @@
 # $Id: Rakefile 2 2012-05-14 09:18:25Z nicb $
 #
 require 'bundler/gem_tasks'
+require 'rake'
+require 'rspec/core/rake_task'
 require 'rake/testtask'
 
 #require 'newgem/tasks'
@@ -13,4 +15,12 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :default => :test
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = Dir.glob('spec/**/*_spec.rb')
+  t.rspec_opts = '--format documentation'
+  # t.rspec_opts << ' more options'
+  # t.rcov = true
+end
+
+task :default => [:spec, :test]
+# task :default => :test
