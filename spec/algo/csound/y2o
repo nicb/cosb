@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+#
+# y2o: reads a yaml spatial configuration and transforms
+#      it into octave coordinates
+#
+
+require 'yaml'
+require 'byebug'
+
+if (ARGV.size < 1)
+  abort("Usage: #{$0} YAML_FILE")
+end
+
+filepath = ARGV[0]
+data = YAML.load(File.open(filepath, 'r'))
+
+data = data[data.keys.first]
+
+rel_keys = data.keys.grep(/_positions/)
+rel_key = rel_keys.first
+key_name = rel_key.sub(/_positions/, '')
+
+positions = data[rel_key]
+
+positions.each do
+  |k, v|
+  idx = k.to_i
+  puts "#{key_name}(%02d).x = %12.9f;" % [idx, v[0]]
+  puts "#{key_name}(%02d).y = %12.9f;" % [idx, v[1]]
+  puts "#{key_name}(%02d).label = \"%s\";" % [idx, v[2]]
+end

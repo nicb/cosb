@@ -1,0 +1,34 @@
+.PS
+scale=2.54
+maxpswid = 16
+maxpsht = 25.8885424
+boxwid = maxpswid/3
+boxht = maxpsht/4
+Outer: box invis wid maxpswid ht maxpsht
+define vroom
+{
+  $1: box $2 with $3 at $4
+  line dashed from $1.w to $1.e
+  line dashed from $1.s to $1.n
+}
+define pospoint
+{
+  x = $1*widscale
+  y = $2*htscale
+  # print "wscale: " widscale " hscale: " htscale " pos x: " $1 " pos y: " $2 " x: " x " y: " y
+  circle rad boxwid/80 with .c at Inner.c + (x, y) color $3
+}
+define roominfo
+{
+  sprintf("l: %.2f, w: %.2f; pos.x: %.2f, pos.y: %.2f", $1, $2, $3, $4) with .w at Upper.e + (0.5,0) ljust
+}
+#
+# rooms (real and virtual)
+#
+# print "boxwid: " boxwid " boxht: " boxht
+vroom(Inner,solid,.c,Outer.c)
+vroom(Upper,dashed,.s,Inner.n)
+vroom(Lower,dashed,.n,Inner.s)
+vroom(Right,dashed,.w,Inner.e)
+vroom(Left, dashed,.e,Inner.w)
+.PE

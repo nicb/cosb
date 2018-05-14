@@ -39,7 +39,7 @@ describe Cosb::Sources do
     end
   end
 
-  it 'calcluates the number of output channels correctly' do
+  it 'calculates the number of output channels correctly' do
     @right_args.each do
       |key, ah|
       res = 0

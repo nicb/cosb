@@ -1,0 +1,11 @@
+#
+# sources: source_calculation (2)
+#
+sources:
+  identifier: source_calculation (2)
+  virtual_space:
+    width:  5.0
+    depth:  8.0
+  reverberation_decay: 2.3
+  source_positions: 
+    1: [    -1.00000000,     -3.00000000, "Source (-1, -3)" ]

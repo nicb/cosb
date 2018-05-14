@@ -1,0 +1,12 @@
+#
+# space: stereo@1m
+#
+space:
+  identifier: stereo@1m
+  virtual_space:
+    width: 10.0
+    depth:  4.0
+  reverberation_decay: 2.3
+  loudspeaker_positions: 
+    1: [    -1.00000000,    +1.00000000, "L" ]
+    2: [    +1.00000000,    +1.00000000, "R" ]
