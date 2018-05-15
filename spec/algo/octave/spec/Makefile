@@ -5,9 +5,10 @@ RUBY=ruby -I.
 PIC=groff -p -mpic -mps
 PS2PDF=ps2pdf
 FIXTURE_DIR=./fixtures
+SOURCE_DIR=../../source
 
 #all: fixtures $(TESTS)
-all: $(TESTS)
+all: source $(TESTS)
 
 distance:
 	($(OCTAVE) $@_spec.m; cat $@_spec_driver.rb) > $@_spec.rb
@@ -33,6 +34,9 @@ source_calculation:
 	($(OCTAVE) $@_spec.m; cat $@_spec_driver.rb) > $@_spec.rb
 	$(SPEC) $@_spec.rb
 	$(RM) $@_spec.rb
+
+source:
+	$(MAKE) -C $(SOURCE_DIR) -$(MAKEFLAGS)
 
 fixtures:
 	$(MAKE) -C $(FIXTURE_CSOUND_DIR) -$(MAKEFLAGS)

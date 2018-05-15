@@ -2,3 +2,4 @@ Gemfile.lock
 /cosb/
 .rake_tasks~
 .byebug_history
+/spec/algo/source/*.wav

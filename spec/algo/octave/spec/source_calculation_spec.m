@@ -49,7 +49,7 @@ for k=1:length(reflections)
     refldelay = refldist/sound_speed;
     refldelay_s = round(refldelay * sr);
     reflatten = 1/refldist;
-    reflsig = (sig(1:end-refldelay_s) * reflatten); 
+    reflsig = (sig(1:end-refldelay_s) * reflatten);
 %   if (k == 3) % back reflection
 %     reflsig = pinna_filter(reflsig);
 %   end
@@ -77,8 +77,8 @@ end
 %
 %
 
-% results(1).is = [sum(std([results(1).octave_signal(:,1) outsig(:,1)]')) sum(std([results(1).octave_signal(:,2) outsig(:,2)]'))]; % integrated standard deviation of the two signals
-% results(1).should_be = [0 0];
+results(1).is = [sum(std([results(1).octave_signal(:,1) outsig(:,1)]')) sum(std([results(1).octave_signal(:,2) outsig(:,2)]'))]; % integrated standard deviation of the two signals
+results(1).should_be = [0 0];
 
 %
 % signal at -1,-3 on a stereo pair
@@ -93,7 +93,7 @@ results(2).speakers = spk;
 results(2).outer_room = [5, 8]; % outer_room dimensions: length, width
 result_is = source_calculation(sig, spos, [spk(1) spk(2)], results(2).outer_room, sr, sound_speed);
 ldist = distance(spos, spk(1));
-ldel_s = round((ldist/sound_speed) * sr)
+ldel_s = round((ldist/sound_speed) * sr);
 latten = 1/ldist;
 rdist = distance(spos, spk(2));
 rdel_s = round((rdist/sound_speed) * sr);
@@ -112,10 +112,10 @@ outsig(ldel_s+1:end,1) = lsig;
 outsig(rdel_s+1:end,2) = rsig;
 for k=1:size(reflections,2)
   for n=1:size(spk,2)
-    refldist = distance(reflections(k), spk(n))
+    refldist = distance(reflections(k), spk(n));
     refldelay = refldist/sound_speed;
-    refldelay_s = round(refldelay * sr)
-    reflatten = 1/refldist
+    refldelay_s = round(refldelay * sr);
+    reflatten = 1/refldist;
     reflsig = (sig(1:end-refldelay_s) * reflatten); 
 %   if (reflections(k).y < 0) % back reflection
 %     reflsig = pinna_filter(reflsig);
@@ -130,11 +130,10 @@ results(2).should_be = [0 0];
 %
 %
 
-
 printf("require 'test_data_structure'\n")
 printf("result = []\n");
 
-for k=1:size(results, 2)
+for k=1:length(results)
   printf("result << SourceCalculation::Data.new(Coord.new(%12.8f, %12.8f), [Coord.new(%12.8f, %12.8f), Coord.new(%12.8f, %12.8f)], [%12.8f, %12.8f], [%12.8f, %12.8f])\n", results(k).source.x, results(k).source.y, results(k).speakers(1).x, results(k).speakers(1).y, results(k).speakers(2).x, results(k).speakers(2).y, results(k).should_be(1), results(k).should_be(2), results(k).is(1), results(k).is(2));
 end
 
