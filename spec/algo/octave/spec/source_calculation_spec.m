@@ -24,8 +24,6 @@ sound_speed = 344;
 %
 % signal at 1,3 on a stereo pair
 %
-% insig = audioread("./fixtures/csound/source_calculation_01.src.wav");
-% results(1).csound_signal = insig(:,1:2);
 spos.x = 1; spos.y = 3;
 spk(1).x = -1; spk(1).y = 1;
 spk(2).x = 1;  spk(2).y = 1;
@@ -50,14 +48,10 @@ for k=1:length(reflections)
     refldelay_s = round(refldelay * sr);
     reflatten = 1/refldist;
     reflsig = (sig(1:end-refldelay_s) * reflatten);
-%   if (k == 3) % back reflection
-%     reflsig = pinna_filter(reflsig);
-%   end
     outsig(refldelay_s+1:end,n) += reflsig;
   end
 end
 
-% results(1).diffs = [std([results(1).octave_signal(:,1) results(1).csound_signal(:,1)]'); std([results(1).octave_signal(:,2) results(1).csound_signal(:,2)]')]'; % standard deviation of the two signals
 %
 % plot to debug cosb
 %
@@ -117,9 +111,6 @@ for k=1:size(reflections,2)
     refldelay_s = round(refldelay * sr);
     reflatten = 1/refldist;
     reflsig = (sig(1:end-refldelay_s) * reflatten); 
-%   if (reflections(k).y < 0) % back reflection
-%     reflsig = pinna_filter(reflsig);
-%   end
     outsig(refldelay_s+1:end,n) += reflsig;
   end
 end
@@ -129,11 +120,65 @@ results(2).is = [sum(std([result_is(:,1) outsig(:,1)]')) sum(std([result_is(:,2)
 results(2).should_be = [0 0];
 %
 %
+% a bunch of random position
+%
+npos = 20;
+
+for k=2:npos
+  spk(2).x = (rand()*5+1);
+  spk(2).y = (rand()*5+1);
+  spk(1).x = -spk(2).x;
+  spk(2).y =  spk(1).y;
+  radius = sqrt(((spk(1).x**2)+(spk(1).y**2)));
+  length = rand()*9*radius + radius;
+  width  = rand()*9*radius + radius;
+  results(k).outer_room = [length, width]; % outer_room dimensions: length, width
+  maxdist = min([length width]);
+  modulo = (rand()*(maxdist-radius)) + radius;
+  angle_size = rand()*2*pi;
+  spos.x = modulo * cos(angle_size);
+  spos.y = modulo * sin(angle_size);
+  results(k).source = spos;
+  results(k).speakers = spk;
+  result_is = source_calculation(sig, spos, [spk(1) spk(2)], results(k).outer_room, sr, sound_speed);
+  ldist = distance(spos, spk(1));
+  ldel_s = round((ldist/sound_speed) * sr);
+  latten = 1/ldist;
+  rdist = distance(spos, spk(2));
+  rdel_s = round((rdist/sound_speed) * sr);
+  ratten = 1/rdist;
+  reflections = refl_1st_order(spos, results(k).outer_room);
+  outsig = zeros(size(sig, 1), 2);
+  %
+  % since the signal is in the back, it should be filtered
+  % (this is NOT done, see above)
+  %
+  % lsig = pinna_filter((sig(1:end-ldel_s) * latten));
+  % rsig = pinna_filter((sig(1:end-rdel_s) * ratten));
+  lsig = sig(1:end-ldel_s) * latten;
+  rsig = sig(1:end-rdel_s) * ratten;
+  outsig(ldel_s+1:end,1) = lsig;
+  outsig(rdel_s+1:end,2) = rsig;
+  for m=1:size(reflections,2)
+    for n=1:size(spk,2)
+      refldist = distance(reflections(m), spk(n));
+      refldelay = refldist/sound_speed;
+      refldelay_s = round(refldelay * sr);
+      reflatten = 1/refldist;
+      reflsig = (sig(1:end-refldelay_s) * reflatten); 
+      outsig(refldelay_s+1:end,n) += reflsig;
+    end
+  end
+  %
+  %
+  results(k).is = [sum(std([result_is(:,1) outsig(:,1)]')) sum(std([result_is(:,2) outsig(:,2)]'))]; % integrated standard deviation of the two signals
+  results(k).should_be = [0 0];
+end
 
 printf("require 'test_data_structure'\n")
 printf("result = []\n");
 
-for k=1:length(results)
+for k=1:size(results,2)
   printf("result << SourceCalculation::Data.new(Coord.new(%12.8f, %12.8f), [Coord.new(%12.8f, %12.8f), Coord.new(%12.8f, %12.8f)], [%12.8f, %12.8f], [%12.8f, %12.8f])\n", results(k).source.x, results(k).source.y, results(k).speakers(1).x, results(k).speakers(1).y, results(k).speakers(2).x, results(k).speakers(2).y, results(k).should_be(1), results(k).should_be(2), results(k).is(1), results(k).is(2));
 end
 
