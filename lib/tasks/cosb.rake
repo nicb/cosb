@@ -11,11 +11,14 @@ namespace :test do
       TEMP_PATH_ROOT = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'tmp'), __FILE__)
       TEMP_PATH = File.join(TEMP_PATH_ROOT, 'cosb-')
       temp_path = Dir::Tmpname.make_tmpname(TEMP_PATH, nil)
+      COSB_EXE_PATH = File.expand_path(File.join(['..'] * 3, 'bin', 'cosb'), __FILE__)
+      CONFIG_PATH = File.join(temp_path, 'config')
+      CSOUND_ORC_OUTPUT = File.join(temp_path, 'csound', 'test.orc')
 
       task :prepare => [temp_path] do
-        mkdir File.join(temp_path, 'config')
-        mkdir File.join(temp_path, 'config', 'global')
-        mkdir File.join(temp_path, 'config', 'spaces')
+        mkdir CONFIG_PATH
+        mkdir File.join(CONFIG_PATH, 'global')
+        mkdir File.join(CONFIG_PATH, 'spaces')
         mkdir File.join(temp_path, 'csound')
       end
 
@@ -39,7 +42,9 @@ namespace :test do
           cc.spaces
         end
   
-        task :orc => [:config]
+        task :orc => [:config] do
+          sh "#{COSB_EXE_PATH} -c #{CONFIG_PATH} > #{CSOUND_ORC_OUTPUT}"
+        end
   
         task :sco => [:config]
 
