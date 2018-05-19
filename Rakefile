@@ -7,7 +7,7 @@ require 'rspec/core/rake_task'
 require 'rake/testtask'
 
 #require 'newgem/tasks'
-#Dir['lib/tasks/**/*.rake'].each { |t| load t }
+Dir['lib/tasks/**/*.rake'].each { |t| load t }
 
 Rake::TestTask.new do |t|
   t.libs << "test"

@@ -1,0 +1,20 @@
+#
+# The <tt>global configuration</tt> concerns all the global parameters that
+# are required while creating a csound spatialization score. That is:
+#
+#  * sampling rate
+#  * ksmps
+#  * number of audio sources required
+#  * number of simultaneous movements required
+#  * number of point sources per wide volume object
+#
+#  The +default+ file is the file loaded if no other file is specified
+#
+global:
+  sample_rate: <%= globs.sample_rate %>
+  ksmps:       <%= globs.ksmps %>
+  audio_sources:           1
+  simultaneous_movements:  1
+  points_per_w_object:     2
+  sound_speed:             <%= globs.sound_speed %> # meters/sec
+
