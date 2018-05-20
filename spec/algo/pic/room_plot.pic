@@ -1,0 +1,45 @@
+.br
+.br
+.br
+.br
+.PS
+scale=2.54
+maxpswid = 16
+maxpsht =  maxpswid
+scale_factor = maxpswid/(max(room_wid, room_ht)*3)
+outer_wid = maxpswid
+outer_ht  = outer_wid
+#
+# for some unknown reason the dimensions are rotated
+#
+boxwid = room_wid * scale_factor
+boxht =  room_ht * scale_factor
+Outer: box dashed wid outer_wid ht outer_ht
+sprintf("room width: %.4f, room depth: %.4f", room_wid, room_ht) with .ne at Outer.ne - (0.5, 0.5) rjust
+define vroom
+{
+  $1: box $2 with $3 at $4
+  line dashed from $1.w to $1.e
+  line dashed from $1.s to $1.n
+}
+define pospoint
+{
+  x = $1*scale_factor
+  y = $2*scale_factor
+  # print "wscale: " widscale " hscale: " htscale " pos x: " $1 " pos y: " $2 " x: " x " y: " y
+  circle rad boxwid/80 with .c at Inner.c + (x, y) color $3
+}
+define roominfo
+{
+  sprintf("l: %.2f, w: %.2f; pos.x: %.2f, pos.y: %.2f", $1, $2, $3, $4) with .w at Upper.e + (0.5,0) ljust
+}
+#
+# rooms (real and virtual)
+#
+# print "boxwid: " boxwid " boxht: " boxht
+vroom(Inner,solid,.c,Outer.c)
+vroom(Upper,dashed,.s,Inner.n)
+vroom(Lower,dashed,.n,Inner.s)
+vroom(Right,dashed,.w,Inner.e)
+vroom(Left, dashed,.e,Inner.w)
+.PE

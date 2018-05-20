@@ -80,6 +80,9 @@ namespace :cosb do
   
         task :octave => ["create:octave"]
 
+        task :pic => [:config] do
+        end
+
       end
 
       task :compare_csound_octave => ["run:csound", "run:octave"]
