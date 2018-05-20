@@ -9,24 +9,27 @@ namespace :cosb do
     namespace :csound do
 
       COSB_ROOT = File.expand_path(File.join(['..'] * 3), __FILE__)
-      TEMP_PATH_ROOT = File.join(COSB_ROOT, 'spec', 'algo', 'csound', 'tmp')
+      TEMP_PATH_ROOT = File.join(COSB_ROOT, 'spec', 'algo', 'tmp')
       TEMP_PATH = File.join(TEMP_PATH_ROOT, 'cosb-')
       temp_path = Dir::Tmpname.make_tmpname(TEMP_PATH, nil)
       COSB_EXE_PATH = File.join(COSB_ROOT, 'bin', 'cosb')
       Y2SCO_EXE_PATH = File.join(COSB_ROOT, 'spec', 'algo', 'csound', 'y2sco')
       CONFIG_PATH = File.join(temp_path, 'config')
       SOURCE_POSITION_PATH = File.join(temp_path, 'config', 'spaces', 'source.yml')
-      CSOUND_ORC_OUTPUT = File.join(temp_path, 'csound', 'test.orc')
-      CSOUND_SCO_OUTPUT = File.join(temp_path, 'csound', 'test.sco')
-      CSOUND_OUTPUT = File.join(temp_path, 'csound', 'test.wav')
-      CSOUND_LOG    = File.join(temp_path, 'csound', 'test.log')
-      SAMPLE_DIR    = File.join(COSB_ROOT, 'spec', 'algo', 'source')
+      CSOUND_TMP_DIR = File.join(temp_path, 'csound')
+      CSOUND_ORC_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.orc')
+      CSOUND_SCO_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.sco')
+      CSOUND_OUTPUT     = File.join(CSOUND_TMP_DIR, 'test.wav')
+      CSOUND_LOG        = File.join(CSOUND_TMP_DIR, 'test.log')
+      SAMPLE_DIR        = File.join(COSB_ROOT, 'spec', 'algo', 'source')
+      OCTAVE_TMP_DIR    = File.join(temp_path, 'octave')
 
       task :prepare => [:full_cleanup, temp_path] do
         mkdir CONFIG_PATH
         mkdir File.join(CONFIG_PATH, 'global')
         mkdir File.join(CONFIG_PATH, 'spaces')
-        mkdir File.join(temp_path, 'csound')
+        mkdir CSOUND_TMP_DIR
+        mkdir OCTAVE_TMP_DIR
       end
 
       directory temp_path
