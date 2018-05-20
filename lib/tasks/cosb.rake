@@ -12,10 +12,13 @@ namespace :test do
       TEMP_PATH = File.join(TEMP_PATH_ROOT, 'cosb-')
       temp_path = Dir::Tmpname.make_tmpname(TEMP_PATH, nil)
       COSB_EXE_PATH = File.expand_path(File.join(['..'] * 3, 'bin', 'cosb'), __FILE__)
+      Y2SCO_EXE_PATH = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'y2sco'), __FILE__)
       CONFIG_PATH = File.join(temp_path, 'config')
+      SOURCE_POSITION_PATH = File.join(temp_path, 'config', 'spaces', 'source.yml')
       CSOUND_ORC_OUTPUT = File.join(temp_path, 'csound', 'test.orc')
+      CSOUND_SCO_OUTPUT = File.join(temp_path, 'csound', 'test.sco')
 
-      task :prepare => [temp_path] do
+      task :prepare => [:full_cleanup, temp_path] do
         mkdir CONFIG_PATH
         mkdir File.join(CONFIG_PATH, 'global')
         mkdir File.join(CONFIG_PATH, 'spaces')
@@ -38,15 +41,16 @@ namespace :test do
 
         task :config => [:prepare] do
           cc = Cosb::TestHelper::ConfigurationCreator.new(temp_path)
-          cc.global
-          cc.spaces
+          cc.configure
         end
   
         task :orc => [:config] do
           sh "#{COSB_EXE_PATH} -c #{CONFIG_PATH} > #{CSOUND_ORC_OUTPUT}"
         end
   
-        task :sco => [:config]
+        task :sco => [:config] do
+          sh "#{Y2SCO_EXE_PATH}  #{SOURCE_POSITION_PATH} > #{CSOUND_SCO_OUTPUT}"
+        end
 
         task :octave => [:config]
 

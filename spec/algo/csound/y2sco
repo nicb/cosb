@@ -1,52 +1,15 @@
 #!/usr/bin/env ruby
 #
-# y2o: reads a yaml spatial configuration and transforms
-#      it into octave coordinates
+# y2sco: reads a yaml spatial configuration and transforms
+#        it into a csound score with proper coordinates
 #
 
-require 'yaml'
-require 'byebug'
+require File.expand_path(File.join('..', 'lib', 'y2sco'), __FILE__)
 
 if (ARGV.size < 1)
   abort("Usage: #{$0} YAML_FILE")
 end
 
-def header()
-  ";\n; Score produced by the #{File.basename($0)} software\n; DO NOT EDIT! (any edit will be overwritten)\n;\n;"
-end
+Cosb::Y2Sco::Generator.new(ARGV[0]).print
 
-filepath = ARGV[0]
-data = YAML.load(File.open(filepath, 'r'))
-
-data = data[data.keys.first]
-
-rel_keys = data.keys.grep(/_positions/)
-rel_key = rel_keys.first
-key_name = rel_key.sub(/_positions/, '')
-
-positions = data[rel_key]
-
-SOURCE_INSTRUMENT_BASE = 0
-STATIC_POSITION_BASE = 300
-ROOM_BASE = 1300
-
-at = 0
-step = 2
-dur = 1
-
-puts header()
-
-positions.each do
-  |k, v|
-  idx = k.to_i
-  sin = "i%-4d %8.4f %8.4f -0.0 1 ; %s" % [ SOURCE_INSTRUMENT_BASE+idx, at, dur, v[2] ]
-  pos = "i%-4d %8.4f %8.4f %+9.4f %+9.4f %+9.4f %+9.4f" % [ STATIC_POSITION_BASE+idx, at, dur, v[0], v[1], v[0], v[1] ]
-  room = "i%-3d %8.4f %8.4f 0.0 0.0" % [ ROOM_BASE+idx, at, dur ]
-
-  puts sin
-  puts pos
-  puts room
-  at += step
-end
-
-puts "\n\ni5000 0.0 %8.4f" % [ dur ]
+exit(0)

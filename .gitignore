@@ -3,3 +3,4 @@ Gemfile.lock
 .rake_tasks~
 .byebug_history
 /spec/algo/source/*.wav
+/spec/algo/csound/tmp/*

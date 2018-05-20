@@ -9,5 +9,11 @@ module Cosb
 end
 
 %w(
+  constants
+  randomizer
+  coordinate
+  global_parameters
+  space_parameters
+  source_parameters
   configuration_creator
 ).each { |f| require File.join(Cosb::TestHelper::PATH, f) }

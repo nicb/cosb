@@ -1,10 +1,11 @@
-space:
+#
+# sources: source_calculation
+#
+sources:
   identifier: <%= spaces.identifier %>
-  loudspeaker_positions:
-    1: [ <%= spaces.lspeaker.print_hirez %> ]
-    2: [ <%= spaces.rspeaker.print_hirez %> ]
   virtual_space:
     width: <%= spaces.width %>
     depth: <%= spaces.depth %>
   reverberation_decay: <%= spaces.reverberation_decay %>
-
+  source_positions: 
+    1: [ <%= source.position.print_hirez %> ]
