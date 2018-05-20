@@ -1,4 +1,3 @@
-sr   = 48000;
 sinc = 1/sr;
 nchnls = 1;
 offset = 0.5;

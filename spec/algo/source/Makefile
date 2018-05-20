@@ -1,3 +1,4 @@
+SAMPLE_RATE=48000
 TARGETS=bwl_pulse_1ch.wav
 SOURCES=$(TARGETS:.wav=.m)
 MATLAB=octave --no-gui -q
@@ -15,5 +16,5 @@ clean:
 .SUFFIXES: .wav .m
 
 %.wav: %.m
-	(cat $<; echo 'filename = "$@"; audiowrite(filename, out, sr);') | $(MATLAB)
+	(echo 'sr=$(SAMPLE_RATE);'; cat $<; echo 'filename = "$@"; audiowrite(filename, out, sr);') | $(MATLAB)
 	$(LN) $@ soundin.1

@@ -2,21 +2,25 @@ require 'tempfile'
 require 'fileutils'
 require File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'lib', 'test_helper'), __FILE__)
 
-namespace :test do
+namespace :cosb do
 
-  namespace :cosb do
+  namespace :test do
   
     namespace :csound do
 
-      TEMP_PATH_ROOT = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'tmp'), __FILE__)
+      COSB_ROOT = File.expand_path(File.join(['..'] * 3), __FILE__)
+      TEMP_PATH_ROOT = File.join(COSB_ROOT, 'spec', 'algo', 'csound', 'tmp')
       TEMP_PATH = File.join(TEMP_PATH_ROOT, 'cosb-')
       temp_path = Dir::Tmpname.make_tmpname(TEMP_PATH, nil)
-      COSB_EXE_PATH = File.expand_path(File.join(['..'] * 3, 'bin', 'cosb'), __FILE__)
-      Y2SCO_EXE_PATH = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'y2sco'), __FILE__)
+      COSB_EXE_PATH = File.join(COSB_ROOT, 'bin', 'cosb')
+      Y2SCO_EXE_PATH = File.join(COSB_ROOT, 'spec', 'algo', 'csound', 'y2sco')
       CONFIG_PATH = File.join(temp_path, 'config')
       SOURCE_POSITION_PATH = File.join(temp_path, 'config', 'spaces', 'source.yml')
       CSOUND_ORC_OUTPUT = File.join(temp_path, 'csound', 'test.orc')
       CSOUND_SCO_OUTPUT = File.join(temp_path, 'csound', 'test.sco')
+      CSOUND_OUTPUT = File.join(temp_path, 'csound', 'test.wav')
+      CSOUND_LOG    = File.join(temp_path, 'csound', 'test.log')
+      SAMPLE_DIR    = File.join(COSB_ROOT, 'spec', 'algo', 'source')
 
       task :prepare => [:full_cleanup, temp_path] do
         mkdir CONFIG_PATH
@@ -52,13 +56,24 @@ namespace :test do
           sh "#{Y2SCO_EXE_PATH}  #{SOURCE_POSITION_PATH} > #{CSOUND_SCO_OUTPUT}"
         end
 
+        task :generate_sample do
+          sr = read_sample_rate
+          cd(SAMPLE_DIR) do
+            sh "make -s clean"
+            sh "make -s SAMPLE_RATE=#{sr}"
+          end
+        end
+
         task :octave => [:config]
 
       end
 
       namespace :run do
 
-        task :csound => ["create:orc", "create:sco"]
+        task :csound => ["create:orc", "create:sco", "create:generate_sample"] do
+          csound_dir = File.join(temp_path, 'csound')
+          sh "SSDIR=#{SAMPLE_DIR} csound -dWo #{CSOUND_OUTPUT} --logfile=#{CSOUND_LOG} #{CSOUND_ORC_OUTPUT} #{CSOUND_SCO_OUTPUT}"
+        end
   
         task :octave => ["create:octave"]
 
@@ -77,4 +92,10 @@ namespace :test do
   
   end
 
+end
+
+def read_sample_rate
+  config_file = File.join(CONFIG_PATH, 'global', 'default.yml')
+  data = YAML.load(File.open(config_file, 'r'))
+  data['global']['sample_rate']
 end
