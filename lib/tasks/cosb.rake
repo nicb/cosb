@@ -1,6 +1,10 @@
 require 'tempfile'
 require 'fileutils'
-require File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'lib', 'test_helper'), __FILE__)
+
+LIBDIR = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'lib'), __FILE__)
+
+require File.join(LIBDIR, 'test_helper')
+require File.join(LIBDIR, 'octave')
 
 namespace :cosb do
 
@@ -9,11 +13,12 @@ namespace :cosb do
     namespace :csound do
 
       COSB_ROOT = File.expand_path(File.join(['..'] * 3), __FILE__)
-      TEMP_PATH_ROOT = File.join(COSB_ROOT, 'spec', 'algo', 'tmp')
+      ALGO_ROOT = File.join(COSB_ROOT, 'spec', 'algo')
+      TEMP_PATH_ROOT = File.join(ALGO_ROOT, 'tmp')
       TEMP_PATH = File.join(TEMP_PATH_ROOT, 'cosb-')
       temp_path = Dir::Tmpname.make_tmpname(TEMP_PATH, nil)
       COSB_EXE_PATH = File.join(COSB_ROOT, 'bin', 'cosb')
-      Y2SCO_EXE_PATH = File.join(COSB_ROOT, 'spec', 'algo', 'csound', 'y2sco')
+      Y2SCO_EXE_PATH = File.join(ALGO_ROOT, 'csound', 'y2sco')
       CONFIG_PATH = File.join(temp_path, 'config')
       SOURCE_POSITION_PATH = File.join(temp_path, 'config', 'spaces', 'source.yml')
       CSOUND_TMP_DIR = File.join(temp_path, 'csound')
@@ -21,8 +26,15 @@ namespace :cosb do
       CSOUND_SCO_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.sco')
       CSOUND_OUTPUT     = File.join(CSOUND_TMP_DIR, 'test.wav')
       CSOUND_LOG        = File.join(CSOUND_TMP_DIR, 'test.log')
-      SAMPLE_DIR        = File.join(COSB_ROOT, 'spec', 'algo', 'source')
+      SAMPLE_DIR        = File.join(ALGO_ROOT, 'source')
+      SAMPLE_PATH       = File.join(SAMPLE_DIR, 'bwl_pulse_1ch.wav')
       OCTAVE_TMP_DIR    = File.join(temp_path, 'octave')
+      OCTAVE_EXE        = 'octave --no-gui -q'
+      OCTAVE_LIB_PATH   = File.join(ALGO_ROOT, 'octave')
+      OCTAVE_OUTPUT     = File.join(OCTAVE_TMP_DIR, 'test.wav')
+      OCTAVE_PLOT_OUTPUT = File.join(OCTAVE_TMP_DIR, 'test.pdf')
+      OCTAVE_DRIVER_TEMPLATE = File.join(ALGO_ROOT, 'lib', 'templates', 'octave', 'driver.m.erb')
+      OCTAVE_DRIVER_OUTPUT   = File.join(OCTAVE_TMP_DIR, 'driver.m')
       PIC_TMP_DIR       = File.join(temp_path, 'pic')
 
       task :prepare => [:full_cleanup, temp_path] do
@@ -70,6 +82,9 @@ namespace :cosb do
         end
 
         task :octave => [:config] do
+          p = Cosb::Spec::Algo::Octave::Parameters.new(OCTAVE_LIB_PATH, SAMPLE_PATH, OCTAVE_OUTPUT, OCTAVE_PLOT_OUTPUT)
+          g = Cosb::Spec::Algo::Octave::Generator.new(CONFIG_PATH, OCTAVE_DRIVER_TEMPLATE, OCTAVE_DRIVER_OUTPUT, p)
+          g.generate          
         end
 
       end
@@ -81,7 +96,9 @@ namespace :cosb do
           sh "SSDIR=#{SAMPLE_DIR} csound -dWo #{CSOUND_OUTPUT} --logfile=#{CSOUND_LOG} #{CSOUND_ORC_OUTPUT} #{CSOUND_SCO_OUTPUT}"
         end
   
-        task :octave => ["create:octave"]
+        task :octave => ["create:octave"] do
+          sh "#{OCTAVE_EXE} #{OCTAVE_DRIVER_OUTPUT}"
+        end
 
         task :pic => [:config] do
         end

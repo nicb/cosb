@@ -1,0 +1,44 @@
+%
+% driver.m.erb:
+%
+% this is used to produce the comparative numerical results
+%
+addpath("<%= parm.lib_path %>")
+pkg load signal;
+pkg load statistics;
+
+[sig sr] = audioread("<%= parm.in_audio_file %>");
+sinc = 1/sr;
+dur = length(sig)/sr;
+amp = max(sig);
+t = [0:sinc:dur-sinc]';
+offset = dur/2;
+s_offset = round(offset * sr);
+sound_speed = <%= glob.sound_speed %>;
+
+%
+% signal at <%= src.source_positions[1][0] %>,<%= src.source_positions[1][1] %> on a stereo pair
+%
+spos.x = <%= src.source_positions[1][0] %>;
+spos.y = <%= src.source_positions[1][1] %>;
+spk(1).x = <%= spaces.loudspeaker_positions[1][0] %>;
+spk(1).y = <%= spaces.loudspeaker_positions[1][1] %>;
+spk(2).x = <%= spaces.loudspeaker_positions[2][0] %>;
+spk(2).y = <%= spaces.loudspeaker_positions[2][1] %>;
+outer_room = [ <%= spaces.virtual_space['depth'] %>, <%= spaces.virtual_space['width'] %> ]; % outer_room dimensions: length, width
+octave_signal = source_calculation(sig, spos, [spk(1) spk(2)], outer_room, sr, sound_speed);
+
+max_sig_amp = max(max(abs(octave_signal(:,1))), max(abs(octave_signal(:,2))));
+max_sig_amp *= 1.1;
+
+figure(1, "visible", "off");
+subplot(2,1,1)
+  plot(t, octave_signal(:, 1))
+  axis([offset dur -(max_sig_amp/10) max_sig_amp])
+subplot(2,1,2)
+  plot(t, octave_signal(:, 2))
+  axis([offset dur -(max_sig_amp/10) max_sig_amp])
+
+print("<%= parm.out_print_file %>", "-dpdf");
+
+audiowrite("<%= parm.out_audio_file %>", octave_signal, sr);
