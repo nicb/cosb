@@ -16,4 +16,7 @@ end
   space_parameters
   source_parameters
   configuration_creator
+  reader
+  readers
+  configuration_reader
 ).each { |f| require File.join(Cosb::TestHelper::PATH, f) }
