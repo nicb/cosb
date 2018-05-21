@@ -1,6 +1,6 @@
 require 'tempfile'
 require 'fileutils'
-require File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'csound', 'lib', 'test_helper'), __FILE__)
+require File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'lib', 'test_helper'), __FILE__)
 
 namespace :cosb do
 

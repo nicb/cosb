@@ -4,7 +4,7 @@
 #        it into a csound score with proper coordinates
 #
 
-require File.expand_path(File.join('..', 'lib', 'y2sco'), __FILE__)
+require File.expand_path(File.join(['..'] * 2, 'lib', 'y2sco'), __FILE__)
 
 if (ARGV.size < 1)
   abort("Usage: #{$0} YAML_FILE")
