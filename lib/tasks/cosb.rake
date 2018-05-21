@@ -23,6 +23,7 @@ namespace :cosb do
       CSOUND_LOG        = File.join(CSOUND_TMP_DIR, 'test.log')
       SAMPLE_DIR        = File.join(COSB_ROOT, 'spec', 'algo', 'source')
       OCTAVE_TMP_DIR    = File.join(temp_path, 'octave')
+      PIC_TMP_DIR       = File.join(temp_path, 'pic')
 
       task :prepare => [:full_cleanup, temp_path] do
         mkdir CONFIG_PATH
@@ -30,6 +31,7 @@ namespace :cosb do
         mkdir File.join(CONFIG_PATH, 'spaces')
         mkdir CSOUND_TMP_DIR
         mkdir OCTAVE_TMP_DIR
+        mkdir PIC_TMP_DIR
       end
 
       directory temp_path
@@ -47,7 +49,7 @@ namespace :cosb do
       namespace :create do
 
         task :config => [:prepare] do
-          cc = Cosb::TestHelper::ConfigurationCreator.new(temp_path)
+          cc = Cosb::Spec::Algo::TestHelper::ConfigurationCreator.new(temp_path)
           cc.configure
         end
   
@@ -67,7 +69,8 @@ namespace :cosb do
           end
         end
 
-        task :octave => [:config]
+        task :octave => [:config] do
+        end
 
       end
 
