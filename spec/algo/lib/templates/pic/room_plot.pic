@@ -1,0 +1,52 @@
+.PS
+scale=2.54
+maxpswid = 16
+maxpsht =  maxpswid
+scale_factor = maxpswid/(max(room_wid, room_ht)*3)
+outer_wid = maxpswid
+outer_ht  = outer_wid
+boxwid = room_wid * scale_factor
+boxht =  room_ht * scale_factor
+define roominfo
+{
+  L1: sprintf("width: %.2f, depth: %.2f; pos.x: %.2f, pos.y: %.2f", $2, $1, $3, $4) with .ne at SuperOuter.ne - (0.2,0.2) rjust
+  L2: sprintf("L1: %2f,%2f; L2: %2f,%2f", $5, $6, $7, $8) with .n at L1.s - (0.0,0.5) rjust
+}
+define vroom
+{
+  $1: box $2 with $3 at $4
+  line dashed from $1.w to $1.e
+  line dashed from $1.s to $1.n
+}
+define pospoint
+{
+  x = $2*scale_factor
+  y = $3*scale_factor
+  # print "wscale: " widscale " hscale: " htscale " pos x: " $1 " pos y: " $2 " x: " x " y: " y
+  Pos_$1: circle rad boxwid/80 with .c at Inner.c + (x, y) color $4
+  Dist_$1_1: line invis from Pos_$1.c to LspBack_1.c
+  Dist_$1_2: line invis from Pos_$1.c to LspBack_2.c
+  dist_1_1 = sqrt(((Dist_$1_1.e.x-Dist_$1_1.w.x)^2)+((Dist_$1_1.e.y-Dist_$1_1.w.y)^2)) / scale_factor
+  dist_1_2 = sqrt(((Dist_$1_2.e.x-Dist_$1_2.w.x)^2)+((Dist_$1_2.e.y-Dist_$1_2.w.y)^2)) / scale_factor
+  line dotted from Dist_$1_1.w to Dist_$1_1.e sprintf("\s[-5]%.4f\s[0]", dist_1_1) above aligned
+  line dotted from Dist_$1_2.w to Dist_$1_2.e sprintf("\s[-5]%.4f\s[0]", dist_1_2) above aligned
+}
+define loudspeaker
+{
+  x = $2*scale_factor
+  y = $3*scale_factor
+  LspBack_$1: box wid 0.1 ht 0.05 with .c at Inner.c + (x, y)
+  line from LspBack_$1.sw to LspBack_$1.sw - (0.025,0.05) to LspBack_$1.se + (0.025,-0.05) to LspBack_$1.se
+}
+define setup
+{
+  SuperOuter: box dotted wid outer_wid ht (outer_ht+2.0)
+  Outer: box dotted wid outer_wid ht outer_ht with .n at SuperOuter.n - (0.0, 2.0)
+  roominfo($1,$2,$3,$4,$5,$6,$7,$8)
+  vroom(Inner,solid,.c,Outer.c)
+  vroom(Upper,dashed,.s,Inner.n)
+  vroom(Lower,dashed,.n,Inner.s)
+  vroom(Right,dashed,.w,Inner.e)
+  vroom(Left, dashed,.e,Inner.w)
+}
+.PE
