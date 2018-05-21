@@ -35,6 +35,9 @@ namespace :cosb do
       OCTAVE_PLOT_OUTPUT = File.join(OCTAVE_TMP_DIR, 'test.pdf')
       OCTAVE_DRIVER_TEMPLATE = File.join(ALGO_ROOT, 'lib', 'templates', 'octave', 'driver.m.erb')
       OCTAVE_DRIVER_OUTPUT   = File.join(OCTAVE_TMP_DIR, 'driver.m')
+      OCTAVE_COMPARATOR_TEMPLATE = File.join(ALGO_ROOT, 'lib', 'templates', 'octave', 'comparator.m.erb')
+      OCTAVE_COMPARATOR_OUTPUT   = File.join(OCTAVE_TMP_DIR, 'comparator.m')
+      OCTAVE_COMPARATOR_PLOT_ROOT= File.join(OCTAVE_TMP_DIR, 'plot')
       PIC_TMP_DIR       = File.join(temp_path, 'pic')
 
       task :prepare => [:full_cleanup, temp_path] do
@@ -87,6 +90,11 @@ namespace :cosb do
           g.generate          
         end
 
+        task :octave_comparator => [:config] do
+          c = Cosb::Spec::Algo::Octave::Comparator.new(OCTAVE_COMPARATOR_TEMPLATE, OCTAVE_COMPARATOR_OUTPUT, CSOUND_OUTPUT, OCTAVE_OUTPUT, OCTAVE_COMPARATOR_PLOT_ROOT)
+          c.generate
+        end
+
       end
 
       namespace :run do
@@ -105,7 +113,9 @@ namespace :cosb do
 
       end
 
-      task :compare_csound_octave => ["run:csound", "run:octave"]
+      task :compare_csound_octave => ["create:octave_comparator", "run:csound", "run:octave"] do
+          sh "#{OCTAVE_EXE} #{OCTAVE_COMPARATOR_OUTPUT}"
+      end
 
       task :spec_results => [:compare_csound_octave]
 

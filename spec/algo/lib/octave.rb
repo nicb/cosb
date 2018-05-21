@@ -18,4 +18,5 @@ require File.expand_path(File.join('..', 'test_helper'), __FILE__)
 %w(
   parameters
   generator
+  comparator
 ).each { |f| require File.join(Cosb::Spec::Algo::Octave::PATH, f) }
