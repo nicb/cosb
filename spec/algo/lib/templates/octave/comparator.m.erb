@@ -6,8 +6,19 @@
 pkg load signal;
 pkg load statistics;
 
-[csound_sig sr] = audioread("<%= self.in_csound_file %>");
-[octave_sig sr] = audioread("<%= self.in_octave_file %>");
+[csound_sig c_sr] = audioread("<%= self.in_csound_file %>");
+[octave_sig o_sr] = audioread("<%= self.in_octave_file %>");
+
+if (length(csound_sig) != length(octave_sig))
+  fprintf(STDERR, "csound and octave lengths differ: (%d != %d)\n", length(csound_sig), length(octave_sig));
+  exit(-1);
+end
+if (c_sr != o_sr)
+  fprintf(STDERR, "csound and octave sampling rates differ: (%d != %d)\n", c_sr, o_sr);
+  exit(-1);
+end
+
+sr = c_sr;
 sinc = 1/sr;
 dur = length(csound_sig)/sr;
 t = [0:sinc:dur-sinc]';
@@ -17,26 +28,27 @@ s_offset = round(offset * sr);
 diff_left = abs(csound_sig(:,1) .- octave_sig(:,1));
 diff_right = abs(csound_sig(:,2) .- octave_sig(:,2));
 
-devtn = [ std(diff_left) std(diff_right) ];
+devtn = [ sum(diff_left) sum(diff_right) ];
 
 printf("%.8f|%.8f\n", devtn(1), devtn(2));
 
 figure(1, "visible", "off")
+title("csound/octave differences")
 subplot(2,1,1)
-  plot(t, diff_left)
+  plot(t, diff_left, ';left channel;')
   axis([offset dur])
 subplot(2,1,2)
-  plot(t, diff_right)
+  plot(t, diff_right, ';right channel;')
   axis([offset dur])
 
-print("<%= self.output_plot_root %>_1.pdf", "-dpdf")
+print("<%= self.output_plot_root %>.pdf", "-dpdf")
 
 figure(2, "visible", "off")
 subplot(2,1,1)
-  plot(t, csound_sig(:,1),';csound;', t, octave_sig(:,1), ';octave;')
+  plot(t, csound_sig(:,1), ';csound;', t, octave_sig(:,1), ';octave;')
   axis([offset dur])
 subplot(2,1,2)
   plot(t, csound_sig(:,2), ';csound;', t, octave_sig(:,2), ';octave;')
   axis([offset dur])
 
-print("<%= self.output_plot_root %>_2.pdf", "-dpdf")
+print("<%= self.output_plot_root %>.pdf", "-dpdf", "-append")

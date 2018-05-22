@@ -26,6 +26,7 @@ spk(1).y = <%= spaces.loudspeaker_positions[1][1] %>;
 spk(2).x = <%= spaces.loudspeaker_positions[2][0] %>;
 spk(2).y = <%= spaces.loudspeaker_positions[2][1] %>;
 outer_room = [ <%= spaces.virtual_space['depth'] %>, <%= spaces.virtual_space['width'] %> ]; % outer_room dimensions: length, width
+refls = refl_1st_order(spos, outer_room);
 octave_signal = source_calculation(sig, spos, [spk(1) spk(2)], outer_room, sr, sound_speed);
 
 max_sig_amp = max(max(abs(octave_signal(:,1))), max(abs(octave_signal(:,2))));
@@ -42,3 +43,39 @@ subplot(2,1,2)
 print("<%= parm.out_print_file %>", "-dpdf");
 
 audiowrite("<%= parm.out_audio_file %>", octave_signal, sr);
+
+%
+% write a yaml info file
+%
+source_delays = zeros(1, 2);
+source_distances = [ distance(spos, spk(1)) distance(spos, spk(2)) ];
+source_delays(1) = itd_samples(source_distances(1), sr, sound_speed)/sr;
+source_delays(2) = itd_samples(source_distances(2), sr, sound_speed)/sr;
+source_atten = 1 ./ source_distances;
+refl_distances = zeros(4, 2);
+refl_delays = zeros(4, 2);
+for k=1:4
+  refl_distances(k, :) = [ distance(refls(k), spk(1)) distance(refls(k), spk(2)) ];
+  refl_delays(k, 1) = itd_samples(refl_distances(k, 1), sr, sound_speed)/sr;
+  refl_delays(k, 2) = itd_samples(refl_distances(k, 2), sr, sound_speed)/sr;
+end
+refl_atten = 1 ./ refl_distances;
+yfh = fopen("<%= parm.out_info_file %>", 'w');
+fdisp(yfh, "#\n# Created automatically by driver.m\n#");
+fdisp(yfh, "octave_info:");
+fprintf(yfh, "\tsample_rate: %d\n", sr);
+fprintf(yfh, "\tsound_speed: %.8f\n", sound_speed);
+fprintf(yfh, "\troom: [ %.8f, %.8f ] # depth, width\n", outer_room);
+fprintf(yfh, "\tsource_position: [ %.8f, %.8f ]\n", spos.x, spos.y);
+fprintf(yfh, "\tfirst_order_reflections: [ ");
+for k=1:3
+  fprintf(yfh, "[%.8f,%.8f], ", refls(k).x, refls(k).y);
+end
+fprintf(yfh, "[%.8f,%.8f] ]\n", refls(4).x, refls(4).y);
+fdisp(yfh, "\tdelays:");
+fprintf(yfh, "\t\tsource: [ %.8f, %.8f ]\n", source_delays);
+fprintf(yfh, "\t\treflections: [ [ %.8f, %.8f ], [ %.8f, %.8f ], [ %.8f, %.8f ], [ %.8f, %.8f ] ]\n", refl_delays);
+fdisp(yfh, "\tattenuations:");
+fprintf(yfh, "\t\tsource: [ %.8f, %.8f ]\n", source_atten);
+fprintf(yfh, "\t\treflections: [ [ %.8f, %.8f ], [ %.8f, %.8f ], [ %.8f, %.8f ], [ %.8f, %.8f ] ]\n", refl_atten);
+fclose(yfh);

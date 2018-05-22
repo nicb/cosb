@@ -38,6 +38,7 @@ namespace :cosb do
       OCTAVE_COMPARATOR_TEMPLATE = File.join(ALGO_ROOT, 'lib', 'templates', 'octave', 'comparator.m.erb')
       OCTAVE_COMPARATOR_OUTPUT   = File.join(OCTAVE_TMP_DIR, 'comparator.m')
       OCTAVE_COMPARATOR_PLOT_ROOT= File.join(OCTAVE_TMP_DIR, 'plot')
+      OCTAVE_INFO_OUTPUT  = File.join(OCTAVE_TMP_DIR, 'info.yml')
       PIC_TMP_DIR       = File.join(temp_path, 'pic')
 
       task :prepare => [:full_cleanup, temp_path] do
@@ -85,7 +86,7 @@ namespace :cosb do
         end
 
         task :octave => [:config] do
-          p = Cosb::Spec::Algo::Octave::Parameters.new(OCTAVE_LIB_PATH, SAMPLE_PATH, OCTAVE_OUTPUT, OCTAVE_PLOT_OUTPUT)
+          p = Cosb::Spec::Algo::Octave::Parameters.new(OCTAVE_LIB_PATH, SAMPLE_PATH, OCTAVE_OUTPUT, OCTAVE_PLOT_OUTPUT, OCTAVE_INFO_OUTPUT)
           g = Cosb::Spec::Algo::Octave::Generator.new(CONFIG_PATH, OCTAVE_DRIVER_TEMPLATE, OCTAVE_DRIVER_OUTPUT, p)
           g.generate          
         end
