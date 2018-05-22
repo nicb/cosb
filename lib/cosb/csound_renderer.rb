@@ -8,6 +8,8 @@ module Cosb
 
   class CsoundRenderer
 
+    attr_reader :no_filtering
+
     class << self
 
       def template(tf)
@@ -35,10 +37,11 @@ module Cosb
         :single_speaker    => template('single_speaker.orc.erb'),
         :reverb_and_output => template('reverb_and_output.orc.erb'),
     }
+    DEFAULT_NO_FILTERING = false
 
     attr_reader :configuration, :templates
 
-    def initialize(cr = Configuration::DEFAULT_CONFIGURATION_ROOT, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE, scf = Configuration::DEFAULT_SPACE_CONFIGURATION_FILE, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output], ps = DEFAULT_TEMPLATES[:point_source])
+    def initialize(cr = Configuration::DEFAULT_CONFIGURATION_ROOT, gcf = Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE, scf = Configuration::DEFAULT_SPACE_CONFIGURATION_FILE, sst = DEFAULT_TEMPLATES[:sound_source], mt = DEFAULT_TEMPLATES[:movements], rt = DEFAULT_TEMPLATES[:reverb_and_output], ps = DEFAULT_TEMPLATES[:point_source], nf = DEFAULT_NO_FILTERING)
       @templates = DEFAULT_TEMPLATES.dup
       @configuration = Configuration.instance
       self.configuration.load(cr, gcf, scf)
@@ -46,7 +49,10 @@ module Cosb
       self.templates[:movements] = mt
       self.templates[:reverb_and_output] = rt
       self.templates[:point_source] = ps
+      @no_filtering = nf
     end
+
+    alias_method :no_filtering?, :no_filtering
 
     # main stage of csound code generator
     def render
@@ -139,6 +145,7 @@ module Cosb
       self.configuration.space_configuration.loudspeaker_positions.each do
         |sp|
         _s = sp # the "_s" variable is needed by the template
+        _cr = self
         b = binding
         res += erb_obj.result(b)
       end

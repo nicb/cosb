@@ -41,7 +41,11 @@
         asp<%= _s.number %>w3     deltapi kdelsp<%= _s.number %>w3       ; ref    w3     -> sp <%= _s.number %>
         asp<%= _s.number %>w4     deltapi kdelsp<%= _s.number %>w4       ; ref    w4     -> sp <%= _s.number %>
 
+<% if _cr.no_filtering? %>
+        alpfsp<%= _s.number %>w3  =       asp<%= _s.number %>w3          ; no filtering in circular multi-channel setups
+<% else %>
         alpfsp<%= _s.number %>w3  tone    asp<%= _s.number %>w3, iw3cutoff ; lpf filter on back wall reflections
+<% end %>
 
         asp<%= _s.number %>     = ((asp<%= _s.number %>d/ksp<%= _s.number %>d)+(asp<%= _s.number %>w1/ksp<%= _s.number %>w1)+(asp<%= _s.number %>w2/ksp<%= _s.number %>w2)+(asp<%= _s.number %>w3/ksp<%= _s.number %>w3)+(asp<%= _s.number %>w4/ksp<%= _s.number %>w4))
         arevsp<%= _s.number %>  = iattarev*((asp<%= _s.number %>d/sqrt(ksp<%= _s.number %>d))+(asp<%= _s.number %>w1/sqrt(ksp<%= _s.number %>w1))+(asp<%= _s.number %>w2/sqrt(ksp<%= _s.number %>w2))+(asp<%= _s.number %>w3/sqrt(ksp<%= _s.number %>w3))+(asp<%= _s.number %>w4/sqrt(ksp<%= _s.number %>w4)))

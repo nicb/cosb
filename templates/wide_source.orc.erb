@@ -38,18 +38,25 @@
         kx        zkr  ixindex      
         ky        zkr  iyindex
 
+        ideltaf   init 20000                   ; should be around the threshold of hearing
         ;
         ; inner and outer room definitions
         ;
 <%= _cr.room_definition %>
+<% if _cr.no_filtering? %>
+        ;
+        ; no front/back filtering in circular multi-channel setups
+        ;
+        audio     = audioin
+<% else %>
         ;
         ; front/back filtering
         ;
-        ideltaf   init 20000                   ; should be around the threshold of hearing
         kfbfc     =    ideltaf * (1 + (ky/iy))
         afiltered tone audioin, kfbfc
 
         audio     = (ky >= 0 ? audioin : afiltered)
+<% end %>
 
         ;
         ; first-order reflection positions (clock-wise order)

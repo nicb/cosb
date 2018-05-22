@@ -79,7 +79,7 @@ namespace :cosb do
         end
   
         task :orc => [:config] do
-          sh "#{COSB_EXE_PATH} -c #{CONFIG_PATH} > #{CSOUND_ORC_OUTPUT}"
+          sh "#{COSB_EXE_PATH} -n -c #{CONFIG_PATH} > #{CSOUND_ORC_OUTPUT}"
         end
   
         task :sco => [:config] do
@@ -130,7 +130,7 @@ namespace :cosb do
 
       end
 
-      task :compare_csound_octave => ["create:octave_comparator", "run:csound", "run:octave", "run:display"] do
+      task :compare_csound_octave => ["run:csound", "run:octave", "create:octave_comparator", "run:display"] do
           sh "#{OCTAVE_EXE} #{OCTAVE_COMPARATOR_OUTPUT}"
       end
 

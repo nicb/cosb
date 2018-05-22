@@ -11,6 +11,7 @@ module Cosb
         :config_root         => Configuration::DEFAULT_CONFIGURATION_ROOT,
         :space               => Configuration::DEFAULT_SPACE_CONFIGURATION_FILE,
         :global              => Configuration::DEFAULT_GLOBAL_CONFIGURATION_FILE,
+        :no_filtering        => CsoundRenderer::DEFAULT_NO_FILTERING,
 	      :sound_input         => CsoundRenderer::DEFAULT_TEMPLATES[:sound_source],
         :movements           => CsoundRenderer::DEFAULT_TEMPLATES[:movements],
 	      :reverb_and_output   => CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output],
@@ -54,6 +55,9 @@ module Cosb
         opts.on("-r", "--reverb-and-output TEMPLATE", String,
                 "Use reverb and output template TEMPLATE",
                 "Default: #{CsoundRenderer::DEFAULT_TEMPLATES[:reverb_and_output]}") { |arg| options[:reverb_and_output] = arg }
+        opts.on("-n", "--no-filtering", nil,
+                "Remove filtering from processing (for circular multichannel setups)",
+                "Default: #{CsoundRenderer::DEFAULT_NO_FILTERING}") { |arg| options[:no_filtering] = true }
         opts.on("-h", "--help",
                 "Show this help message.") { stdout.puts opts; exit }
         opts.parse!(arguments)
@@ -71,7 +75,7 @@ module Cosb
       rao_template         = options[:reverb_and_output]
       ps_template          = options[:point_source]
 
-      cr = Cosb::CsoundRenderer.new(config_root, global_configuration, space_configuration, sound_input_template, movements_template, rao_template, ps_template)
+      cr = Cosb::CsoundRenderer.new(config_root, global_configuration, space_configuration, sound_input_template, movements_template, rao_template, ps_template, options[:no_filtering])
       stdout.puts(cr.render)
     end
   end
