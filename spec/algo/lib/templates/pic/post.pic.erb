@@ -1,0 +1,25 @@
+.PS
+#
+# these two variables must be put *before* the 'copy' directive
+#
+room_wid = <%= parms.room[1] %>
+room_depth = <%= parms.room[0] %>
+
+copy "<%= self.macro_file_path %>"
+
+pos_x = <%= parms.source_position[0] %>
+pos_y = <%= parms.source_position[1] %>
+lsp_l_x = <%= parms.loudspeaker_positions[0][0] %>
+lsp_l_y = <%= parms.loudspeaker_positions[0][1] %>
+lsp_r_x = <%= parms.loudspeaker_positions[1][0] %>
+lsp_r_y = <%= parms.loudspeaker_positions[1][1] %>
+setup(room_depth,room_wid,pos_x,pos_y,lsp_l_x,lsp_l_y,lsp_r_x,lsp_r_y)
+
+loudspeaker(1, lsp_l_x, lsp_l_y)
+loudspeaker(2, lsp_r_x, lsp_r_y)
+pospoint(1,pos_x,pos_y, "red")
+<% ndx=2; parms.first_order_reflections.each do |rfl| %>
+pospoint(<%= ndx %>, <%= rfl[0] %>, <%= rfl[1] %>, "cyan")
+<% end %>
+.PE
+

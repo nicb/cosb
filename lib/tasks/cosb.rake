@@ -5,6 +5,7 @@ LIBDIR = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'lib'), __FILE__
 
 require File.join(LIBDIR, 'test_helper')
 require File.join(LIBDIR, 'octave')
+require File.join(LIBDIR, 'pic')
 
 namespace :cosb do
 
@@ -40,6 +41,15 @@ namespace :cosb do
       OCTAVE_COMPARATOR_PLOT_ROOT= File.join(OCTAVE_TMP_DIR, 'plot')
       OCTAVE_INFO_OUTPUT  = File.join(OCTAVE_TMP_DIR, 'info.yml')
       PIC_TMP_DIR       = File.join(temp_path, 'pic')
+      PIC_TEMPLATE_DIR  = File.join(ALGO_ROOT, 'lib', 'templates', 'pic')
+      PIC_TEMPLATE      = File.join(PIC_TEMPLATE_DIR, 'post.pic.erb')
+      PIC_MACRO_FILE    = File.join(PIC_TEMPLATE_DIR, 'room_plot.pic')
+      PIC_INFO_INPUT    = OCTAVE_INFO_OUTPUT
+      PIC_OUTPUT        = File.join(PIC_TMP_DIR, 'room_plot.pic')
+      PIC_EXE           = 'groff -p -mpic -mps'
+      PS2PDF            = 'ps2pdf'
+      PIC_EXE           = 'groff -p -mpic -mps'
+      PIC_PDF           = File.join(PIC_TMP_DIR, 'room_plot.pdf')
 
       task :prepare => [:full_cleanup, temp_path] do
         mkdir CONFIG_PATH
@@ -92,8 +102,13 @@ namespace :cosb do
         end
 
         task :octave_comparator => [:config] do
-          c = Cosb::Spec::Algo::Octave::Comparator.new(OCTAVE_COMPARATOR_TEMPLATE, OCTAVE_COMPARATOR_OUTPUT, CSOUND_OUTPUT, OCTAVE_OUTPUT, OCTAVE_COMPARATOR_PLOT_ROOT)
+          c = Cosb::Spec::Algo::Octave::Comparator.new(OCTAVE_COMPARATOR_TEMPLATE, OCTAVE_COMPARATOR_OUTPUT, CSOUND_OUTPUT, OCTAVE_OUTPUT, OCTAVE_COMPARATOR_PLOT_ROOT, OCTAVE_INFO_OUTPUT)
           c.generate
+        end
+
+        task :pic => ["run:octave"] do
+          g = Cosb::Spec::Algo::Pic::Generator.new(PIC_INFO_INPUT, PIC_TEMPLATE, PIC_MACRO_FILE, PIC_OUTPUT)
+          g.generate
         end
 
       end
@@ -109,7 +124,9 @@ namespace :cosb do
           sh "#{OCTAVE_EXE} #{OCTAVE_DRIVER_OUTPUT}"
         end
 
-        task :pic => [:config] do
+        desc "display results"
+        task :display => ["create:pic"] do
+          sh "#{PIC_EXE} #{PIC_OUTPUT} | #{PS2PDF} - #{PIC_PDF}"
         end
 
       end

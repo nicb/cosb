@@ -9,22 +9,22 @@
 %
 % where:
 %        pointA - the source point (in coord data structure)
-%        outer_room - a vector containing length and width of the room
+%        outer_room - a vector containing depth and width of the room
 %
 %
 function r = refl_1st_order(pointA, outer_room)
-  l = outer_room(1);
+  d = outer_room(1);
   w = outer_room(2);
-  hl = l/2.0;
+  hd = d/2.0;
   hw = w/2.0;
   %
   % front reflection
   %
   fwpos.x = pointA.x;
-  fwpos.y = hl;
+  fwpos.y = hd;
   dfr1 = distance(pointA, fwpos);
   fr1.x = fwpos.x;
-  fr1.y = hl + dfr1;
+  fr1.y = hd + dfr1;
   %
   % right reflection
   %
@@ -37,10 +37,10 @@ function r = refl_1st_order(pointA, outer_room)
   % back reflection
   %
   bwpos.x = pointA.x;
-  bwpos.y = -hl;
+  bwpos.y = -hd;
   dbr1 = distance(pointA, bwpos);
   br1.x = bwpos.x;
-  br1.y = -hl-dbr1;
+  br1.y = -hd-dbr1;
   %
   % left reflection
   %

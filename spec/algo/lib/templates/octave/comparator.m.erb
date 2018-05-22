@@ -15,7 +15,7 @@ if (length(csound_sig) != length(octave_sig))
 end
 if (c_sr != o_sr)
   fprintf(STDERR, "csound and octave sampling rates differ: (%d != %d)\n", c_sr, o_sr);
-  exit(-1);
+  exit(-2);
 end
 
 sr = c_sr;
@@ -30,7 +30,13 @@ diff_right = abs(csound_sig(:,2) .- octave_sig(:,2));
 
 devtn = [ sum(diff_left) sum(diff_right) ];
 
-printf("%.8f|%.8f\n", devtn(1), devtn(2));
+oifh = fopen("<%= self.out_info_file %>", "a");
+if (oifh < 0)
+  ferror(oifh);
+  exit(-3);
+end
+fprintf(oifh, "\terror: [%.8f, %.8f] # left, right\n", devtn(1), devtn(2));
+fclose(oifh);
 
 figure(1, "visible", "off")
 title("csound/octave differences")

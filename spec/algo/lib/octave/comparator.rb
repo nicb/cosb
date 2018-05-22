@@ -7,14 +7,15 @@ module Cosb
       module Octave
 
         class Comparator
-          attr_reader :template, :output_path, :in_csound_file, :in_octave_file, :output_plot_root
+          attr_reader :template, :output_path, :in_csound_file, :in_octave_file, :output_plot_root, :out_info_file
 
-          def initialize(tmpl, op, icf, iof, opl)
+          def initialize(tmpl, op, icf, iof, opl, oif)
             @template = tmpl
             @output_path = op
             @in_csound_file = icf
             @in_octave_file = iof
             @output_plot_root = opl
+            @out_info_file = oif
           end
 
           def generate
