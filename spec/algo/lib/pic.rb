@@ -16,7 +16,6 @@ end
 require File.expand_path(File.join('..', 'test_helper'), __FILE__)
 
 %w(
-  reader
   generator
 ).each { |f| require File.join(Cosb::Spec::Algo::Pic::PATH, f) }
 

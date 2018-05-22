@@ -48,7 +48,6 @@ namespace :cosb do
       PIC_OUTPUT        = File.join(PIC_TMP_DIR, 'room_plot.pic')
       PIC_EXE           = 'groff -p -mpic -mps'
       PS2PDF            = 'ps2pdf'
-      PIC_EXE           = 'groff -p -mpic -mps'
       PIC_PDF           = File.join(PIC_TMP_DIR, 'room_plot.pdf')
 
       task :prepare => [:full_cleanup, temp_path] do
@@ -131,19 +130,18 @@ namespace :cosb do
 
       end
 
-      task :compare_csound_octave => ["create:octave_comparator", "run:csound", "run:octave"] do
+      task :compare_csound_octave => ["create:octave_comparator", "run:csound", "run:octave", "run:display"] do
           sh "#{OCTAVE_EXE} #{OCTAVE_COMPARATOR_OUTPUT}"
       end
-
-      task :spec_results => [:compare_csound_octave]
 
     end
 
     desc 'test cosb csound production with random configurations'
-    task :csound => ["csound:spec_results"] do
-      # Rake::Task["csound:cleanup"].invoke
+    RSpec::Core::RakeTask.new(:spec => ["csound:compare_csound_octave"]) do
+      |t|
+      t.pattern = Dir.glob(File.join(COSB_ROOT, 'spec', 'algo', 'spec', '**', '*_spec.rb'))
     end
-  
+
   end
 
 end

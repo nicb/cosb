@@ -2,16 +2,9 @@ module Cosb
   module Spec
     module Algo
 
-      module Pic
+      module TestHelper
     
-        #
-        # TODO
-        #
-        # Cosb::Pic::Reader
-        #
-        # reads all configuration files
-        #
-        class Reader < ::Cosb::Spec::Algo::TestHelper::Reader
+        class InfoReader < Reader
     
           def initialize(fp)
             super(fp)

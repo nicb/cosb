@@ -35,7 +35,7 @@ if (oifh < 0)
   ferror(oifh);
   exit(-3);
 end
-fprintf(oifh, "\terror: [%.8f, %.8f] # left, right\n", devtn(1), devtn(2));
+fprintf(oifh, "  error: [%.8f, %.8f] # left, right\n", devtn(1), devtn(2));
 fclose(oifh);
 
 figure(1, "visible", "off")
@@ -49,12 +49,21 @@ subplot(2,1,2)
 
 print("<%= self.output_plot_root %>.pdf", "-dpdf")
 
+ymax = max(max(max(csound_sig(:,1)),max(octave_sig(:,1))), max(max(csound_sig(:,2)), max(octave_sig(:,2))));
+ymax *= 1.1;
+
 figure(2, "visible", "off")
-subplot(2,1,1)
-  plot(t, csound_sig(:,1), ';csound;', t, octave_sig(:,1), ';octave;')
-  axis([offset dur])
-subplot(2,1,2)
-  plot(t, csound_sig(:,2), ';csound;', t, octave_sig(:,2), ';octave;')
-  axis([offset dur])
+subplot(4,2,1)
+  plot(t, csound_sig(:,1), ';csound;');
+  axis([offset dur -ymax/100 ymax*1.1])
+subplot(4,2,2)
+  plot(t, octave_sig(:,1), ';octave;')
+  axis([offset dur -ymax/100 ymax*1.1])
+subplot(4,2,3)
+  plot(t, csound_sig(:,2), ';csound;')
+  axis([offset dur -ymax/100 ymax*1.1])
+subplot(4,2,4)
+  plot(t, octave_sig(:,2), ';octave;')
+  axis([offset dur -ymax/100 ymax*1.1])
 
 print("<%= self.output_plot_root %>.pdf", "-dpdf", "-append")

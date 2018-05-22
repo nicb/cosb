@@ -25,4 +25,5 @@ end
   reader
   readers
   configuration_reader
+  info_reader
 ).each { |f| require File.join(Cosb::Spec::Algo::TestHelper::PATH, f) }

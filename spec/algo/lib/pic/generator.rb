@@ -10,7 +10,7 @@ module Cosb
          attr_reader :reader, :template, :macro_file_path, :out_file
    
          def initialize(fp, tmpl, mfp, of)
-           @reader = Reader.new(fp)
+           @reader = Cosb::Spec::Algo::TestHelper::InfoReader.new(fp)
            @template = tmpl
            @macro_file_path = mfp
            @out_file = of
