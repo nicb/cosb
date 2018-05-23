@@ -3,9 +3,12 @@ require 'fileutils'
 
 LIBDIR = File.expand_path(File.join(['..'] * 3, 'spec', 'algo', 'lib'), __FILE__)
 
-require File.join(LIBDIR, 'test_helper')
-require File.join(LIBDIR, 'octave')
-require File.join(LIBDIR, 'pic')
+%w(
+  test_helper
+  octave
+  pic
+  csound
+).each { |f| require File.join(LIBDIR, f) }
 
 namespace :cosb do
 
@@ -27,6 +30,7 @@ namespace :cosb do
       CSOUND_SCO_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.sco')
       CSOUND_OUTPUT     = File.join(CSOUND_TMP_DIR, 'test.wav')
       CSOUND_LOG        = File.join(CSOUND_TMP_DIR, 'test.log')
+      CSOUND_INFO       = File.join(CSOUND_TMP_DIR, 'info.yml')
       SAMPLE_DIR        = File.join(ALGO_ROOT, 'source')
       SAMPLE_PATH       = File.join(SAMPLE_DIR, 'bwl_pulse_1ch.wav')
       OCTAVE_TMP_DIR    = File.join(temp_path, 'octave')
@@ -108,6 +112,11 @@ namespace :cosb do
         task :pic => ["run:octave"] do
           g = Cosb::Spec::Algo::Pic::Generator.new(PIC_INFO_INPUT, PIC_TEMPLATE, PIC_MACRO_FILE, PIC_OUTPUT)
           g.generate
+        end
+
+        task :csound_info => ["run:csound"] do
+          ci = Cosb::Spec::Algo::Csound::LogReader.new(CSOUND_LOG, CSOUND_INFO)
+          ci.to_yaml
         end
 
       end

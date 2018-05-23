@@ -1,3 +1,6 @@
+require 'scanf'
+require 'byebug'
+
 module Cosb
   module Spec
     module Algo
@@ -14,9 +17,7 @@ module Cosb
 end
 
 %w(
-  info
-  info_proxy
-  reflections_info
+  exceptions
   room_info
   signal_info
   speaker_info
