@@ -14,7 +14,6 @@ instr <%= _cr.point_source_instrument_numbers %>
         iparoffset init index * 2   ; data structure is { x, y }
         ixindex    init iparoffset
         iyindex    init iparoffset + 1
-                   print p1, index, ixindex, iyindex
 
         idur       = p3
         iattadir   = ampdb(p4)       ; amplitude attenuation (in dB)
@@ -32,6 +31,8 @@ instr <%= _cr.point_source_instrument_numbers %>
         ;
         kx        zkr  ixindex      
         ky        zkr  iyindex
+        iprintkperiod init 0.8
+        printks "point_source: source=%04d, pos.x=%+12.9f, pos.y=%+12.9f\n", iprintkperiod, index+1, kx, ky
 
         ideltaf   init 20000                   ; should be around the threshold of hearing
         ;

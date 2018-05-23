@@ -3,9 +3,12 @@
         ;
         ; inner room definition
         ;
+        iprintkperiod init 0.8
   <% _cr.configuration.space_configuration.loudspeaker_positions.each do |sp| %>
         ixsp<%= sp.number %> init <%= sp.x %>  ; x coordinate (in m) for speaker n. <%= sp.number %>
         iysp<%= sp.number %> init <%= sp.y %>  ; y coordinate (in m) for speaker n. <%= sp.number %>
+        printks "room_definition: speaker[<%= sp.number %>]: x=%+12.9f, y=%+12.9f\n", iprintkperiod, <%= sp.number %>, <%= sp.x %>, <%= sp.y %>
+        
   <% end %>
         ;
         ; outer room definition
@@ -21,4 +24,5 @@
         ;
         iw3cutoff init ideltaf / (1 - (iymin*0.35))
 
-        print ixmax, ixmin, iymax, iymin, iw3cutoff
+        print iw3cutoff
+        printks "room_definition: room: xmax=%+12.9f, xmin=%+12.9f ymax=%+12.9f, ymin=%+12.9f\n", iprintkperiod, ixmax, ixmin, iymax, iymin

@@ -24,6 +24,7 @@
         ksp<%= _s.number %>w2 = sqrt(kxsp<%= _s.number %>q+kw2sq) ; dist ref w2 -> sp<%= _s.number %>
         ksp<%= _s.number %>w3 = sqrt(kxsp<%= _s.number %>q+kw3sq) ; dist ref w3 -> sp<%= _s.number %>
         ksp<%= _s.number %>w4 = sqrt(kxsp<%= _s.number %>q+kw4sq) ; dist ref w4 -> sp<%= _s.number %>
+        printks "single_speaker[<%= _s.number %>]: distances: source=%04d, direct=%12.9f, rfw=%12.9f, rrw=%12.9f, rbw=%12.9f, rlw=%12.9f\n", iprintkperiod, index+1, ksp<%= _s.number %>d, ksp<%= _s.number %>w1, ksp<%= _s.number %>w2, ksp<%= _s.number %>w3, ksp<%= _s.number %>w4
         ;
         ; delays
         ;
@@ -32,6 +33,7 @@
         kdelsp<%= _s.number %>w2  port ksp<%= _s.number %>w2/givel,0.1   ; wall 2 reflection
         kdelsp<%= _s.number %>w3  port ksp<%= _s.number %>w3/givel,0.1   ; wall 3 reflection
         kdelsp<%= _s.number %>w4  port ksp<%= _s.number %>w4/givel,0.1   ; wall 4 reflection
+        printks "single_speaker[<%= _s.number %>]: delays: source=%04d, direct=%12.9f, rfw=%12.9f, rrw=%12.9f, rbw=%12.9f, rlw=%12.9f\n", iprintkperiod, index+1, kdelsp<%= _s.number %>d, kdelsp<%= _s.number %>w1, kdelsp<%= _s.number %>w2, kdelsp<%= _s.number %>w3, kdelsp<%= _s.number %>w4
         ;
         ; signal management
         ;
