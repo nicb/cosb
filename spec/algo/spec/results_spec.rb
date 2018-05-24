@@ -15,14 +15,24 @@ describe "Cosb Csound tester" do
     @info.error['deviation'].each { |e| expect(e).to be_within(@eps).of(0.0) }
   end
 
-  it "has max value index below #{@bigeps} for left channels" do
+  it "has max value index difference below 10 for left channels" do
     mi = @info.error['maxindexes']
     expect(mi[0][0]).to be_within(@bigeps).of(mi[1][0])
   end
 
-  it "has max value index below #{@bigeps} for right channels" do
+  it "has max value index difference below 10 for right channels" do
     mi = @info.error['maxindexes']
     expect(mi[0][1]).to be_within(@bigeps).of(mi[1][1])
+  end
+
+  it "has max value difference below 1/1000 for left channels" do
+    mv = @info.error['maxvalues']
+    expect(mv[0][0]).to be_within(@eps).of(mv[1][0])
+  end
+
+  it "has max value difference below 1/1000 for right channels" do
+    mv = @info.error['maxvalues']
+    expect(mv[0][1]).to be_within(@eps).of(mv[1][1])
   end
 
 end
