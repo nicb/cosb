@@ -9,30 +9,34 @@
         ;
         ; positional parameters for speaker <%= _s.number %>
         ;
-        kxsp<%= _s.number %>  = kx-ixsp<%= _s.number %>
-        kysp<%= _s.number %>  = ky-iysp<%= _s.number %>
-        kxsp<%= _s.number %>q = kxsp<%= _s.number %>*kxsp<%= _s.number %>
-        kysp<%= _s.number %>q = kysp<%= _s.number %>*kysp<%= _s.number %>
+        kxsp<%= _s.number %>   = kx-ixsp<%= _s.number %>
+        kysp<%= _s.number %>   = ky-iysp<%= _s.number %>
+        kxsp<%= _s.number %>sq = kxsp<%= _s.number %>*kxsp<%= _s.number %>
+        kysp<%= _s.number %>sq = kysp<%= _s.number %>*kysp<%= _s.number %>
         ;
         ; direct signal distance calculation
         ;
-        ksp<%= _s.number %>d  = sqrt(kxsp<%= _s.number %>q+kysp<%= _s.number %>q) ; dist dir -> sp<%= _s.number %>
+        ksp<%= _s.number %>d  = sqrt(kxsp<%= _s.number %>sq+kysp<%= _s.number %>sq) ; dist dir -> sp<%= _s.number %>
         ;
         ; first order reflection distance calculations
         ;
-        ksp<%= _s.number %>w1 = sqrt(kxsp<%= _s.number %>q+kw1sq) ; dist ref w1 -> sp<%= _s.number %>
-        ksp<%= _s.number %>w2 = sqrt(kxsp<%= _s.number %>q+kw2sq) ; dist ref w2 -> sp<%= _s.number %>
-        ksp<%= _s.number %>w3 = sqrt(kxsp<%= _s.number %>q+kw3sq) ; dist ref w3 -> sp<%= _s.number %>
-        ksp<%= _s.number %>w4 = sqrt(kxsp<%= _s.number %>q+kw4sq) ; dist ref w4 -> sp<%= _s.number %>
+        ksp<%= _s.number %>yw1sq = ((kw1y-iysp<%= _s.number %>)^2)
+        ksp<%= _s.number %>w1 = sqrt(kxsp<%= _s.number %>sq+ksp<%= _s.number %>yw1sq) ; dist ref w1 -> sp<%= _s.number %>
+        ksp<%= _s.number %>xw2sq = ((kw2x-ixsp<%= _s.number %>)^2)
+        ksp<%= _s.number %>w2 = sqrt(ksp<%= _s.number %>xw2sq+kysp<%= _s.number %>sq) ; dist ref w2 -> sp<%= _s.number %>
+        ksp<%= _s.number %>yw3sq = ((kw3y-iysp<%= _s.number %>)^2)
+        ksp<%= _s.number %>w3 = sqrt(kxsp<%= _s.number %>sq+ksp<%= _s.number %>yw3sq) ; dist ref w3 -> sp<%= _s.number %>
+        ksp<%= _s.number %>xw4sq = ((kw4x-ixsp<%= _s.number %>)^2)
+        ksp<%= _s.number %>w4 = sqrt(ksp<%= _s.number %>xw4sq+kysp<%= _s.number %>sq) ; dist ref w4 -> sp<%= _s.number %>
         printks "single_speaker[<%= _s.number %>]: distances: source=%04d, direct=%12.9f, rfw=%12.9f, rrw=%12.9f, rbw=%12.9f, rlw=%12.9f\n", iprintkperiod, index+1, ksp<%= _s.number %>d, ksp<%= _s.number %>w1, ksp<%= _s.number %>w2, ksp<%= _s.number %>w3, ksp<%= _s.number %>w4
         ;
         ; delays
         ;
-        kdelsp<%= _s.number %>d   port ksp<%= _s.number %>d/givel,0.1    ; direct sound
-        kdelsp<%= _s.number %>w1  port ksp<%= _s.number %>w1/givel,0.1   ; wall 1 reflection
-        kdelsp<%= _s.number %>w2  port ksp<%= _s.number %>w2/givel,0.1   ; wall 2 reflection
-        kdelsp<%= _s.number %>w3  port ksp<%= _s.number %>w3/givel,0.1   ; wall 3 reflection
-        kdelsp<%= _s.number %>w4  port ksp<%= _s.number %>w4/givel,0.1   ; wall 4 reflection
+        kdelsp<%= _s.number %>d   port ksp<%= _s.number %>d/givel,0.0005    ; direct sound
+        kdelsp<%= _s.number %>w1  port ksp<%= _s.number %>w1/givel,0.0005   ; wall 1 reflection
+        kdelsp<%= _s.number %>w2  port ksp<%= _s.number %>w2/givel,0.0005   ; wall 2 reflection
+        kdelsp<%= _s.number %>w3  port ksp<%= _s.number %>w3/givel,0.0005   ; wall 3 reflection
+        kdelsp<%= _s.number %>w4  port ksp<%= _s.number %>w4/givel,0.0005   ; wall 4 reflection
         printks "single_speaker[<%= _s.number %>]: delays: source=%04d, direct=%12.9f, rfw=%12.9f, rrw=%12.9f, rbw=%12.9f, rlw=%12.9f\n", iprintkperiod, index+1, kdelsp<%= _s.number %>d, kdelsp<%= _s.number %>w1, kdelsp<%= _s.number %>w2, kdelsp<%= _s.number %>w3, kdelsp<%= _s.number %>w4
         ;
         ; signal management

@@ -28,7 +28,7 @@ module Cosb
           |k, v|
           idx = k.to_i
           res += "i%-4d %8.4f %8.4f -0.0 1 ; %s\n" % [ SOURCE_INSTRUMENT_BASE+idx, self.at, self.dur, v[2] ]
-          res += "i%-4d %8.4f %8.4f %+9.5f %+9.5f %+9.5f %+9.5f\n" % [ STATIC_POSITION_BASE+idx, self.at, self.dur, v[0], v[1], v[0], v[1] ]
+          res += "i%-4d %8.4f %8.4f %+9.5f %+9.5f %+9.5f %+9.5f\n" % [ STATIC_POSITION_BASE+idx, self.at, self.dur, v[0], v[0], v[1], v[1] ]
           res += "i%-3d %8.4f %8.4f 0.0 0.0\n" % [ ROOM_BASE+idx, self.at, self.dur ]
         
           self.at += self.step

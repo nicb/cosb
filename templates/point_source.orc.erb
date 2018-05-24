@@ -32,7 +32,7 @@ instr <%= _cr.point_source_instrument_numbers %>
         kx        zkr  ixindex      
         ky        zkr  iyindex
         iprintkperiod init 0.8
-        printks "point_source: source=%04d, pos.x=%+12.9f, pos.y=%+12.9f\n", iprintkperiod, index+1, kx, ky
+        printks "point_source: source=%04d, pos.x=%+12.9f, pos.y=%+12.9f, xindex=%d, yindex=%d\n", iprintkperiod, index+1, kx, ky, ixindex, iyindex
 
         ideltaf   init 20000                   ; should be around the threshold of hearing
         ;
@@ -57,18 +57,20 @@ instr <%= _cr.point_source_instrument_numbers %>
         ;
         ; first-order reflection positions (clock-wise order)
         ;
-	kxmax     = 2*(ixmax-kx)
-	kymax     = 2*(iymax-ky)
-	kxmin     = 2*(kx-ixmin)
-	kymin     = 2*(ky-iymin)
-        kw1       = ky + kymax  ; reflection from front wall
-        kw2       = kx + kxmax  ; reflection from right wall
-        kw3       = kymin - ky  ; reflection from back wall
-        kw4       = kxmin - kx  ; reflection from left wall
-	kw1sq     = kw1*kw1
-	kw2sq     = kw2*kw2
-	kw3sq     = kw3*kw3
-	kw4sq     = kw4*kw4
+        kxmax     = 2*(ixmax-kx)
+        kymax     = 2*(iymax-ky)
+        kxmin     = 2*(kx-ixmin)
+        kymin     = 2*(ky-iymin)
+        kw1y      = ky + kymax   ; reflection from front wall
+        kw1x      = kx
+        kw2x      = kx + kxmax   ; reflection from right wall
+        kw2y      = ky
+        kw3y      = -(kymin - ky); reflection from back wall
+        kw3x      = kx
+        kw4x      = -(kxmin - kx); reflection from left wall
+        kw4y      = ky
+
+        printks "---> point_source reflection positions: source=%04d rfw=[%+.9f,%+.9f], rrw=[%+.9f,%+.9f], rbw=[%+.9f,%+.9f], rlw=[%+.9f,%+.9f]\n", iprintkperiod, index+1, kw1x, kw1y, kw2x, kw2y, kw3x, kw3y, kw4x, kw4y
 
         adeld   delayr    1   ; maximum delay: 1 second (more than enough)
 

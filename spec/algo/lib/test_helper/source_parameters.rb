@@ -28,15 +28,18 @@ module Cosb
           # * create source with cartesian coordinates and appropriate label
           #
           def generate_source_position(sp)
-            min_modulo = Math::sqrt((sp.rspeaker.x**2)+(sp.rspeaker.y)**2)
+            halfw = sp.width/2
+            halfd = sp.depth/2
+            hdiag = Math::sqrt((halfw**2)+(halfd**2))
             angle = randomizer(0, 2*Math::PI)
-            max_x = [sp.width/2, ((sp.width/2)*Math::cos(angle)).abs].min
-            max_y = [sp.depth/2, ((sp.depth/2)*Math::sin(angle)).abs].min
-            max_modulo = Math::sqrt((max_x**2)+(max_y**2))
+            min_modulo = Math::sqrt((sp.rspeaker.x**2)+(sp.rspeaker.y)**2)
+            max_modulo_x = [ halfw, (hdiag*Math::cos(angle)).abs ].min
+            max_modulo_y = [ halfd, (hdiag*Math::sin(angle)).abs ].min
+            max_modulo = Math::sqrt((max_modulo_x**2)+(max_modulo_y**2))
             modulo = randomizer(min_modulo, max_modulo)
             x = modulo*Math::cos(angle)
             y = modulo*Math::sin(angle)
-            Coordinate.new(x, y, "source at (%+.2f, %+.2f)" % [ x, y ])
+            Coordinate.new(x, y, "source at (%+.2f, %+.2f)[modulo: %.4f, angle: %.4f]" % [ x, y, modulo, angle ])
           end
     
         end

@@ -139,7 +139,7 @@ namespace :cosb do
 
       end
 
-      task :compare_csound_octave => ["run:csound", "run:octave", "create:octave_comparator", "run:display"] do
+      task :compare_csound_octave => ["create:csound_info", "run:octave", "create:octave_comparator", "run:display"] do
           sh "#{OCTAVE_EXE} #{OCTAVE_COMPARATOR_OUTPUT}"
       end
 

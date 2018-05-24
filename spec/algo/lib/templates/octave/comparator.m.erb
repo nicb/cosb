@@ -10,11 +10,11 @@ pkg load statistics;
 [octave_sig o_sr] = audioread("<%= self.in_octave_file %>");
 
 if (length(csound_sig) != length(octave_sig))
-  fprintf(STDERR, "csound and octave lengths differ: (%d != %d)\n", length(csound_sig), length(octave_sig));
+  fprintf(stderr, "csound and octave lengths differ: (%d != %d)\n", length(csound_sig), length(octave_sig));
   exit(-1);
 end
 if (c_sr != o_sr)
-  fprintf(STDERR, "csound and octave sampling rates differ: (%d != %d)\n", c_sr, o_sr);
+  fprintf(stderr, "csound and octave sampling rates differ: (%d != %d)\n", c_sr, o_sr);
   exit(-2);
 end
 

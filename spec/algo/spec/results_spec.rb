@@ -10,7 +10,7 @@ describe "Cosb Csound tester" do
   end
 
   it 'has an error below 10^-3 for both channels' do
-    @info.error.each { |e| expect(e).to be_within(10**(-3)).of(0.0) }
+    @info.error.each { |e| expect(e).to be_within(10**(-3)).of(1.0) }
   end
 
 end
