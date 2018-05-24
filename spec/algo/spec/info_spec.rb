@@ -9,32 +9,33 @@ describe "compare Cosb Csound info" do
   before :example do
     @octave_info = Cosb::Spec::Algo::TestHelper::InfoReader.new(TMPDIR_OCTAVE_PATH)
     @csound_info = YAML.load(File.open(TMPDIR_CSOUND_PATH))
-    @eps = 10**(-4)
+    @hieps = 10**(-3)
+    @loeps = 10**(-5)
   end
 
   it 'has the same room depth' do
-    expect(@csound_info['room']['depth']).to be_within(@eps).of(@octave_info.room[0])
+    expect(@csound_info['room']['depth']).to be_within(@loeps).of(@octave_info.room[0])
   end
 
   it 'has the same room width' do
-    expect(@csound_info['room']['width']).to be_within(@eps).of(@octave_info.room[1])
+    expect(@csound_info['room']['width']).to be_within(@loeps).of(@octave_info.room[1])
   end
 
   it 'has the same louspeaker positions' do
-    expect(@csound_info['speakers'][1]['x']).to be_within(@eps).of(@octave_info.speakers[1]['x'])
-    expect(@csound_info['speakers'][1]['y']).to be_within(@eps).of(@octave_info.speakers[1]['y'])
-    expect(@csound_info['speakers'][2]['x']).to be_within(@eps).of(@octave_info.speakers[2]['x'])
-    expect(@csound_info['speakers'][2]['y']).to be_within(@eps).of(@octave_info.speakers[2]['y'])
+    expect(@csound_info['speakers'][1]['x']).to be_within(@loeps).of(@octave_info.speakers[1]['x'])
+    expect(@csound_info['speakers'][1]['y']).to be_within(@loeps).of(@octave_info.speakers[1]['y'])
+    expect(@csound_info['speakers'][2]['x']).to be_within(@loeps).of(@octave_info.speakers[2]['x'])
+    expect(@csound_info['speakers'][2]['y']).to be_within(@loeps).of(@octave_info.speakers[2]['y'])
   end
 
   it 'has the same source position' do
-    expect(@csound_info['source']['x']).to be_within(@eps).of(@octave_info.source_position[0])
-    expect(@csound_info['source']['y']).to be_within(@eps).of(@octave_info.source_position[1])
+    expect(@csound_info['source']['x']).to be_within(@loeps).of(@octave_info.source_position[0])
+    expect(@csound_info['source']['y']).to be_within(@loeps).of(@octave_info.source_position[1])
   end
 
   it 'has the same source->speaker distances' do
-    expect(@csound_info['speakers'][1]['distances']['direct']).to be_within(@eps).of(@octave_info.speakers[1]['distances']['direct'])
-    expect(@csound_info['speakers'][2]['distances']['direct']).to be_within(@eps).of(@octave_info.speakers[2]['distances']['direct'])
+    expect(@csound_info['speakers'][1]['distances']['direct']).to be_within(@hieps).of(@octave_info.speakers[1]['distances']['direct'])
+    expect(@csound_info['speakers'][2]['distances']['direct']).to be_within(@hieps).of(@octave_info.speakers[2]['distances']['direct'])
   end
 
   1.upto(2) do
@@ -42,7 +43,7 @@ describe "compare Cosb Csound info" do
     it "has the same source/1st reflections->speaker[#{n}] distances" do
 	    @csound_info['speakers'][n]['distances'].each do
 	      |k, v|
-        expect((c=@csound_info['speakers'][n]['distances'][k])).to(be_within(@eps).of((o = @octave_info.speakers[n]['distances'][k])), "#{k.to_s}: #{c} != #{o}")
+        expect((c=@csound_info['speakers'][n]['distances'][k])).to(be_within(@hieps).of((o = @octave_info.speakers[n]['distances'][k])), "#{k.to_s}: #{c} != #{o}")
 	    end
     end
   end
@@ -52,7 +53,17 @@ describe "compare Cosb Csound info" do
     it "has the same source/1st reflections->speaker[#{n}] delays" do
 	    @csound_info['speakers'][n]['delays'].each do
 	      |k, v|
-        expect((c=@csound_info['speakers'][n]['delays'][k])).to(be_within(@eps).of((o = @octave_info.speakers[n]['delays'][k])), "#{k.to_s}: #{c} != #{o}")
+        expect((c=@csound_info['speakers'][n]['delays'][k])).to(be_within(@hieps).of((o = @octave_info.speakers[n]['delays'][k])), "#{k.to_s}: #{c} != #{o}")
+	    end
+    end
+  end
+
+  1.upto(2) do
+    |n|
+    it "has the same source/1st reflections->speaker[#{n}] attenuations" do
+	    @csound_info['speakers'][n]['attenuations'].each do
+	      |k, v|
+        expect((c=@csound_info['speakers'][n]['attenuations'][k])).to(be_within(@hieps).of((o = @octave_info.speakers[n]['attenuations'][k])), "#{k.to_s}: #{c} != #{o}")
 	    end
     end
   end

@@ -4,11 +4,12 @@ module Cosb
       module Csound
 
         class SpeakerInfo
-          attr_accessor :num, :x, :y, :distances, :delays
+          attr_accessor :num, :x, :y, :distances, :delays, :attenuations
 
           def initialize
             self.distances = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.delays    = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
+            self.attenuations = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.num       = 0
           end
 
@@ -19,6 +20,8 @@ module Cosb
             self.distances.each { |k, v| res += ("      %s: %12.9f\n" % [k, v]) }
             res += "    delays:\n"
             self.delays.each { |k, v| res += ("      %s: %12.9f\n" % [k, v]) }
+            res += "    attenuations:\n"
+            self.attenuations.each { |k, v| res += ("      %s: %12.9f\n" % [k, v]) }
             res
           end
 
@@ -38,6 +41,13 @@ module Cosb
                self.delays['rrw'] = rrw
                self.delays['rbw'] = rbw
                self.delays['rlw'] = rlw
+            when /: attenuations:/
+               (lidx, src, dir, rfw, rrw, rbw, rlw) = line.scanf("single_speaker[%d]: attenuations: source=%d, direct=%f, rfw=%f, rrw=%f, rbw=%f, rlw=%f")
+               self.attenuations['direct'] = dir
+               self.attenuations['rfw'] = rfw
+               self.attenuations['rrw'] = rrw
+               self.attenuations['rbw'] = rbw
+               self.attenuations['rlw'] = rlw
             else
               raise ParseError, "parse_single_speaker: couldn't recognize line #{line}"
             end

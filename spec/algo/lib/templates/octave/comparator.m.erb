@@ -18,6 +18,11 @@ if (c_sr != o_sr)
   exit(-2);
 end
 
+[maxcvall, maxcindxl] = max(csound_sig(:,1));
+[maxcvalr, maxcindxr] = max(csound_sig(:,2));
+[maxovall, maxoindxl] = max(octave_sig(:,1));
+[maxovalr, maxoindxr] = max(octave_sig(:,2));
+
 sr = c_sr;
 sinc = 1/sr;
 dur = length(csound_sig)/sr;
@@ -35,7 +40,10 @@ if (oifh < 0)
   ferror(oifh);
   exit(-3);
 end
-fprintf(oifh, "  error: [%.8f, %.8f] # left, right\n", devtn(1), devtn(2));
+fprintf(oifh, "  error:\n");
+fprintf(oifh, "    deviation: [%.9f, %.9f] # left, right\n", devtn(1), devtn(2));
+fprintf(oifh, "    maxvalues: [ [ %.9f, %.9f ], [ %.9f, %.9f ] ] # csound(l,r) octave(l,r)\n", maxcvall, maxcvalr, maxovall, maxovalr);
+fprintf(oifh, "    maxindexes: [ [ %d, %d ], [ %d, %d ] ] # csound(l,r) octave(l,r)\n", maxcindxl, maxcindxr, maxoindxl, maxoindxr);
 fclose(oifh);
 
 figure(1, "visible", "off")
