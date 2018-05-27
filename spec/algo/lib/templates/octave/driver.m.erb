@@ -15,30 +15,36 @@ t = [0:sinc:dur-sinc]';
 offset = dur/2;
 s_offset = round(offset * sr);
 sound_speed = <%= glob.sound_speed %>;
+noutchnls = <%= glob.nchnls %>;
 
 %
 % signal at <%= src.source_positions[1][0] %>,<%= src.source_positions[1][1] %> on a stereo pair
 %
 spos.x = <%= src.source_positions[1][0] %>;
 spos.y = <%= src.source_positions[1][1] %>;
-spk(1).x = <%= spaces.loudspeaker_positions[1][0] %>;
-spk(1).y = <%= spaces.loudspeaker_positions[1][1] %>;
-spk(2).x = <%= spaces.loudspeaker_positions[2][0] %>;
-spk(2).y = <%= spaces.loudspeaker_positions[2][1] %>;
+<% 1.upto(glob.nchnls) do |k| %>
+  spk(<%= k %>).x = <%= spaces.loudspeaker_positions[k][0] %>;
+  spk(<%= k %>).y = <%= spaces.loudspeaker_positions[k][1] %>;
+<% end %>
+
 outer_room = [ <%= spaces.virtual_space['depth'] %>, <%= spaces.virtual_space['width'] %> ]; % outer_room dimensions: length, width
 refls = refl_1st_order(spos, outer_room);
-octave_signal = source_calculation(sig, spos, [spk(1) spk(2)], outer_room, sr, sound_speed);
+octave_signal = source_calculation(sig, spos, spk, outer_room, sr, sound_speed);
 
-max_sig_amp = max(max(abs(octave_signal(:,1))), max(abs(octave_signal(:,2))));
+max_sig_amp = max(max(abs(octave_signal)));
 max_sig_amp *= 1.1;
 
 figure(1, "visible", "off");
-subplot(2,1,1)
-  plot(t, octave_signal(:, 1))
+nplots = <%= glob.nchnls %>/2;
+<% ndx = 1; while(ndx <= glob.nchnls) %>
+subplot(nplots,2,<%= ndx %>)
+  plot(t, octave_signal(:, <%= ndx %>))
   axis([offset dur -(max_sig_amp/10) max_sig_amp])
-subplot(2,1,2)
-  plot(t, octave_signal(:, 2))
+subplot(nplots,2,<%= ndx+1 %>)
+  plot(t, octave_signal(:, <%= ndx+1 %>))
   axis([offset dur -(max_sig_amp/10) max_sig_amp])
+<% ndx += 2 %>
+<% end %>
 
 print("<%= parm.out_print_file %>", "-dpdf");
 
@@ -47,17 +53,23 @@ audiowrite("<%= parm.out_audio_file %>", octave_signal, sr);
 %
 % write a yaml info file
 %
-source_delays = zeros(1, 2);
-source_distances = [ distance(spos, spk(1)) distance(spos, spk(2)) ];
-source_delays(1) = itd_samples(source_distances(1), sr, sound_speed)/sr;
-source_delays(2) = itd_samples(source_distances(2), sr, sound_speed)/sr;
+source_delays = zeros(1, <%= glob.nchnls %>);
+source_distances = [
+<% 1.upto(glob.nchnls) do |n| %>
+        distance(spos, spk(<%= n %>))
+<% end %>
+];
+for k=1:<%= glob.nchnls %>
+  source_delays(k) = itd_samples(source_distances(k), sr, sound_speed)/sr;
+end
 source_atten = 1 ./ source_distances;
-refl_distances = zeros(4, 2);
-refl_delays = zeros(4, 2);
+refl_distances = zeros(4, noutchnls);
+refl_delays = zeros(4, noutchnls);
 for k=1:4
-  refl_distances(k, :) = [ distance(refls(k), spk(1)) distance(refls(k), spk(2)) ];
-  refl_delays(k, 1) = itd_samples(refl_distances(k, 1), sr, sound_speed)/sr;
-  refl_delays(k, 2) = itd_samples(refl_distances(k, 2), sr, sound_speed)/sr;
+  for s=1:noutchnls
+    refl_distances(k, s) = distance(refls(k), spk(s));
+    refl_delays(k, s) = itd_samples(refl_distances(k, s), sr, sound_speed)/sr;
+  end
 end
 refl_atten = 1 ./ refl_distances;
 yfh = fopen("<%= parm.out_info_file %>", 'w');
@@ -74,7 +86,7 @@ for k=1:4
   fprintf(yfh, "    %s: [ %.9f, %.9f ]\n", rfltags(k, :), refls(k).x, refls(k).y);
 end
 fdisp(yfh,   "  speakers:");
-for s=1:2
+for s=1:noutchnls
   fprintf(yfh, "    %d:\n", s);
   fprintf(yfh, "      x: %.9f\n", spk(s).x);
   fprintf(yfh, "      y: %.9f\n      distances:\n", spk(s).y);

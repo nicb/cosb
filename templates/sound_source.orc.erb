@@ -4,18 +4,19 @@
 ;
 ; input instruments
 ;
-         instr     <%= _cr.input_instrument_numbers %>
+         instr     <%= _ss.input_instrument_numbers %>
 
-         ifirst    init      <%= _cr.first_input_instrument %>
-         index     init      p1 - ifirst ; audio channel (mono)
+         ifirst    init      <%= _ss.first_instrument_number %>
+         index     init      p1 - ifirst
          iamp      =         ampdb(p4)
          idur      =         p3
-	 ifno      =         p5
+	       ifno      =         p5
 
-         asig      soundin   ifno
-         asig      =         asig * iamp
-         asig      linen     asig, 0.005, idur, 0.005
+<%= _ss.create_instruments %>
+;        asig      soundin   ifno
+;        asig      =         asig * iamp
+;        asig      linen     asig, 0.005, idur, 0.005
 
-                   zawm      asig, index
+;                  zawm      asig, index
 
          endin

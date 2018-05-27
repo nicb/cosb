@@ -75,7 +75,7 @@ module Cosb
 
     def input_instrument_numbers
       start = DEFAULT_INPUT_INSTRUMENT_OFFSET
-      finish = start + self.configuration.global_configuration.audio_sources
+      finish = start + self.configuration.global_configuration.audio_sources.num_sources
       list_numbers(start, finish)
     end
 
@@ -92,7 +92,9 @@ module Cosb
     end
 
     def number_of_zak_a_variables
-      self.configuration.global_configuration.audio_sources + self.configuration.space_configuration.num_channels
+      nas = 0
+      self.configuration.global_configuration.audio_sources.each { |as| nas += as.num_sources }
+      (nas + self.configuration.space_configuration.num_channels)
     end
 
     def number_of_zak_k_variables
@@ -161,7 +163,17 @@ module Cosb
     end
 
     def render_sound_source
-      render_any(:sound_source)
+      # render_any(:sound_source)
+      res = ''
+      lines = nil
+      File.open(self.templates[:sound_source], 'r') { |fh| lines = fh.readlines }
+      string_template = lines.join
+      self.configuration.global_configuration.audio_sources.each do
+        |_ss|
+        b = binding
+        res += ERB.new(string_template).result(b)
+      end
+      res
     end
 
     def render_movements

@@ -18,6 +18,7 @@
 global:
   sample_rate: 96000
   ksmps:         100
+  nchnls:          2       # stereo output
   audio_sources:           100
   simultaneous_movements:  100
   points_per_w_object:     13

@@ -11,7 +11,8 @@ module Cosb
             @file_out = fno
             @room = RoomInfo.new
             @signal = SignalInfo.new
-            @speakers = [ SpeakerInfo.new, SpeakerInfo.new ]
+            @speakers = []
+            1.upto(6) { |n| @speakers << SpeakerInfo.new(n) }
             read
           end
 
@@ -19,6 +20,7 @@ module Cosb
             res = ""
             [:room, :signal].each { |m| res += self.send(m).to_yaml }
             res += "speakers:\n"
+byebug
             self.speakers.each { |s| res += s.to_yaml }
             File.open(self.file_out, 'w') { |yfh| yfh.puts(res) }
           end
@@ -39,7 +41,7 @@ module Cosb
               self.signal.parse(line)
             when /^single_speaker/
               sidx = speaker_index(line)
-              self.speakers[sidx-1].parse(line, sidx)
+              self.speakers[sidx-1].parse(line)
             when /^room_definition/
               self.room.parse(line, self.speakers)
             end

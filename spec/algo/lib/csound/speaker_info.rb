@@ -4,13 +4,14 @@ module Cosb
       module Csound
 
         class SpeakerInfo
-          attr_accessor :num, :x, :y, :distances, :delays, :attenuations
+          attr_reader   :num
+          attr_accessor :x, :y, :distances, :delays, :attenuations
 
-          def initialize
+          def initialize(n)
             self.distances = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.delays    = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.attenuations = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
-            self.num       = 0
+            @num          = n
           end
 
           def to_yaml
@@ -25,7 +26,7 @@ module Cosb
             res
           end
 
-          def parse(line, idx)
+          def parse(line)
             case line
             when /: distances:/
                (lidx, src, dir, rfw, rrw, rbw, rlw) = line.scanf("single_speaker[%d]: distances: source=%d, direct=%f, rfw=%f, rrw=%f, rbw=%f, rlw=%f")
@@ -51,7 +52,6 @@ module Cosb
             else
               raise ParseError, "parse_single_speaker: couldn't recognize line #{line}"
             end
-            self.num = idx
           end
 
         end

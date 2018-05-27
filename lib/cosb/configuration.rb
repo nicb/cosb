@@ -44,23 +44,31 @@ module Cosb
     class Global < Base
 
       attr_reader :sample_rate, :ksmps, :audio_sources, :simultaneous_movements, :points_per_w_object, :sound_speed
+      attr_accessor :audio_sources
 
     protected
 
       def read_configuration
-        read_configuration_common('global', [:sample_rate, :ksmps, :simultaneous_movements, :points_per_w_object, :sound_speed])
+        read_configuration_common('global', [:sample_rate, :ksmps, :simultaneous_movements, :points_per_w_object, :sound_speed, :audio_sources])
         read_sources
       end
 
     private
 
       def read_sources
-        read_configuration_common('global', [:audio_sources]) do
-          |attr|
-          attr.each do
-            |a|
-          end
+        asar = self.audio_sources
+        self.audio_sources = Sources.new
+        if asar.is_a?(Array)
+          asar.each { |aa| self.audio_sources << Source.new(aa) }
+        else
+          self.audio_sources << Source.new([1, asar])
         end
+#       read_configuration_common('global', ['audio_sources']) do
+#         |attr|
+#         attr.each do
+#           |a|
+#         end
+#       end
       end
 
     end
@@ -68,7 +76,6 @@ module Cosb
     class Space < Base
   
       attr_reader :identifier, :loudspeaker_positions, :virtual_space, :reverberation_decay
-      attr_accessor :audio_sources
 
       #
       # +num_channels+ returns twice the numbers of loudspeaker, because we
@@ -85,8 +92,7 @@ module Cosb
       # the system is supposed to have
       #
       def fix_audio_output_busses(as)
-        n_audio_sources = count_audio_sources(as)
-        total_audio_busses = n_audio_sources + self.num_channels
+        total_audio_busses = as.num_sources + self.num_channels
         self.loudspeaker_positions.each do
           |sp|
           sidx = sp.number - 1
@@ -115,21 +121,21 @@ module Cosb
 
     private
 
-      def count_audio_sources(as)
-        if as.is_a?(Array)
-          self.audio_sources = []
-          as.each do
-            |ea|
-            raise(StandardError, "audio sources should either be a scalar or an array of arrays") unless ea.is_a?(Array)
-            ea.each { |eaa| self.audio_sources << Sources.new(eaa) }
-          end
-        else
-          self.audio_sources = [ Sources.new([1, as]) ]
-        end
-        res = 0
-        self.audio_sources.each { |ass| res += ass.num_sources }
-        res
-      end
+#     def count_audio_sources(as)
+#       if as.is_a?(Array)
+#         self.audio_sources = []
+#         raise(StandardError, "audio sources should either be a scalar or an array of arrays") unless (as[0].is_a?(Array) && as[1].is_a?(Array))
+#         as.each do
+#           |ea|
+#           raise(StandardError, "audio sources should either be a scalar or an array of arrays") unless ea.is_a?(Array)
+#           # ea.each { |eaa| self.audio_sources << Sources.new(eaa) }
+#           self.audio_sources << Sources.new(ea)
+#         end
+#       else
+#         self.audio_sources = [ Sources.new([1, as]) ]
+#       end
+#       as.num_channels
+#     end
 
     end
 

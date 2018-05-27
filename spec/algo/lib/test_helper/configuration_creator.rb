@@ -14,7 +14,7 @@ module Cosb
           def initialize(t)
             @tmpdir = t
             @global_parameters = GlobalParameters.new
-            @space_parameters = SpaceParameters.new
+            @space_parameters = SpaceParameters.new(self.global_parameters)
             @source_parameters = SourceParameters.new(self.space_parameters)
           end
       
@@ -48,7 +48,7 @@ module Cosb
           def common_configurator(out_path, in_path, b)
             File.open(in_path, 'r') do
               |rfh|
-              template = ERB.new(rfh.readlines.join)
+              template = ERB.new(rfh.readlines.join, 0, '-')
               File.open(out_path, 'w') do
                 |wfh|
                 wfh.puts template.result(b)

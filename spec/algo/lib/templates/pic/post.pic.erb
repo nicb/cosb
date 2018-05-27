@@ -9,18 +9,26 @@ copy "<%= self.macro_file_path %>"
 
 pos_x = <%= parms.source_position[0] %>
 pos_y = <%= parms.source_position[1] %>
-lsp_l_x = <%= parms.speakers[1]['x'] %>
-lsp_l_y = <%= parms.speakers[1]['y'] %>
-lsp_r_x = <%= parms.speakers[2]['x'] %>
-lsp_r_y = <%= parms.speakers[2]['y'] %>
-setup(room_depth,room_wid,pos_x,pos_y,lsp_l_x,lsp_l_y,lsp_r_x,lsp_r_y)
 
-loudspeaker(1, lsp_l_x, lsp_l_y)
-loudspeaker(2, lsp_r_x, lsp_r_y)
-pospoint(1,pos_x,pos_y, "red")
+setup(room_depth,room_wid,pos_x,pos_y)
+
+<% 1.upto(parms.speakers.size) do |n| %>
+  lsp_<%= n %>_x = <%= parms.speakers[n]['x'] %>
+  lsp_<%= n %>_y = <%= parms.speakers[n]['y'] %>
+<% end %>
+Lspl0: sprintf("L1: %+.2f,%+.2f; L2: %+.2f,%+.2f", <%= parms.speakers[1]['x'] %>,<%= parms.speakers[1]['y'] %>, <%= parms.speakers[2]['x'] %>, <%= parms.speakers[2]['y'] %>) with .n at L_roominfo.s - (0.0,0.5) rjust
+<% x=3; while(x <= parms.speakers.size) %>
+  <% ndx = (x-1)/2 %>
+  Lspl<%= ndx %>: sprintf("L%.0f: %+.2f,%+.2f; L%.0f: %+.2f,%+.2f", <%= x %>, <%= parms.speakers[x]['x'] %>, <%= parms.speakers[x]['y'] %>, <%= x+1 %>, <%= parms.speakers[x+1]['x'] %>, <%= parms.speakers[x+1]['y'] %>) with .n at Lspl<%= ndx-1 %>.s - (0.0,0.5) rjust
+  <% x += 2 %>
+<% end %>
+
+<% 1.upto(parms.speakers.size) do |n| %>
+   loudspeaker(<%= n %>, lsp_<%= n %>_x, lsp_<%= n %>_y)
+<% end %>
 <% ndx=2; parms.first_order_reflections.each do |k, rfl| %>
 pospoint(<%= ndx %>, <%= rfl[0] %>, <%= rfl[1] %>, "cyan")
 <% ndx+=1 %>
 <% end %>
+pospoint(1,pos_x,pos_y, "red")
 .PE
-

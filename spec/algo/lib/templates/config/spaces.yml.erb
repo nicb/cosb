@@ -1,10 +1,11 @@
 space:
   identifier: <%= spaces.identifier %>
   loudspeaker_positions:
-    1: [ <%= spaces.lspeaker.print_hirez %> ]
-    2: [ <%= spaces.rspeaker.print_hirez %> ]
-  virtual_space:
+  <% ndx = 1; spaces.speakers.each do |s| -%>
+  <%= ndx -%>: [ <%= s.print_hirez -%> ]
+  <% ndx += 1 -%>
+<% end -%>
+virtual_space:
     width: <%= spaces.width %>
     depth: <%= spaces.depth %>
   reverberation_decay: <%= spaces.reverberation_decay %>
-

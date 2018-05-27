@@ -4,6 +4,7 @@
 #
 #  * sampling rate
 #  * ksmps
+#  * the number of output channels
 #  * number of audio sources required
 #  * number of simultaneous movements required
 #  * number of point sources per wide volume object
@@ -13,8 +14,8 @@
 global:
   sample_rate: <%= globs.sample_rate %>
   ksmps:       <%= globs.ksmps %>
+  nchnls:      <%= globs.nchnls %>
   audio_sources:           1
   simultaneous_movements:  1
   points_per_w_object:     2
   sound_speed:             <%= globs.sound_speed %> # meters/sec
-

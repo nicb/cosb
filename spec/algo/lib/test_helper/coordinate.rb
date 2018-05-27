@@ -10,7 +10,7 @@ module Cosb
           def initialize(x, y, l = '')
             @x = x
             @y = y
-            @label = lorez_label if l.empty? || l.nil?
+            @label = (l.empty? || l.nil?) ? lorez_label : l
           end
     
           def print_hirez
@@ -18,7 +18,7 @@ module Cosb
           end
     
           def print_lorez
-            print_common("%+.2f, %+.2f, \"%s\"")
+            print_common(self.lorez_label + " \"%s\"")
           end
     
           def lorez_label

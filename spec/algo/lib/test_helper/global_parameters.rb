@@ -5,7 +5,7 @@ module Cosb
       module TestHelper
       
         class GlobalParameters
-          attr_accessor :sample_rate, :ksmps, :sound_speed
+          attr_accessor :sample_rate, :ksmps, :sound_speed, :nchnls
 
           include Cosb::Spec::Algo::TestHelper::Randomizer
       
@@ -19,6 +19,7 @@ module Cosb
             @sample_rate = random_sample_rate
             @ksmps = random_ksmps
             @sound_speed = random_sound_speed
+            @nchnls = random_output_channels
           end
       
           def random_sample_rate
@@ -35,6 +36,14 @@ module Cosb
       
           def random_sound_speed
             randomizer(338, 350)
+          end
+
+          #
+          # output channels observe a y-simmetry, so they are always even
+          #
+          def random_output_channels
+            nodd = randomizer(1, 5).round
+            nodd*2
           end
       
         end
