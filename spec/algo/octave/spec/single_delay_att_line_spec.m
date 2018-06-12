@@ -52,9 +52,9 @@ outsig(del_s+1:end) = (sig(1:end-del_s) * atten);
 results(2).is = sum(std([result_is outsig]')); % integrated standard deviation of the two signals
 results(2).should_be = 0;
 %
-for k=3:6
+for k=3:40
   spos.x = rand()*100-50; spos.y = rand()*100-50;
-  lsp.x = rand()*2-1; lsp.y = rand()*2-1;
+  lsp.x = rand()*100-50; lsp.y = rand()*100-50;
   results(k).pos = spos;
   results(k).lsp = lsp;
   result_is = single_delay_att_line(sig, spos, lsp, sr, sound_speed);
