@@ -27,11 +27,11 @@ end
 module Refl1stOrder
 
   class Data
-    attr_reader :source, :length, :width, :should_be, :is
+    attr_reader :source, :depth, :width, :should_be, :is
   
-    def initialize(s, l, w, sb, is)
+    def initialize(s, d, w, sb, is)
       @source = s
-      @length = l
+      @depth = d
       @width = w
       @should_be = sb
       @is = is
@@ -55,9 +55,9 @@ module Refl1stOrder
 
     def header
       puts ".PS\ncopy \"room_plot.pic\""
-      puts "htscale=boxht/%-.8f" % [ self.length ]
       puts "widscale=boxwid/%-.8f" % [ self.width ]
-      puts "roominfo(%-.8f,%-.8f,%-.8f,%-.8f)" % [ self.length, self.width, self.source.x, self.source.y ]
+      puts "dpthscale=boxht/%-.8f" % [ self.depth ]
+      puts "roominfo(%-.8f,%-.8f,%-.8f,%-.8f)" % [ self.width, self.depth, self.source.x, self.source.y ]
     end
 
     def trailer

@@ -29,7 +29,7 @@ spk(1).x = -1; spk(1).y = 1;
 spk(2).x = 1;  spk(2).y = 1;
 results(1).source = spos;
 results(1).speakers = spk;
-results(1).outer_room = [10, 3]; % outer_room dimensions: length, width
+results(1).outer_room = [10, 3]; % outer_room dimensions: width, depth
 results(1).octave_signal = source_calculation(sig, spos, [spk(1) spk(2)], results(1).outer_room, sr, sound_speed);
 ldist = distance(spos, spk(1));
 ldel_s = round((ldist/sound_speed) * sr);
@@ -84,7 +84,7 @@ spk(1).x = -1; spk(1).y = 1;
 spk(2).x = 1;  spk(2).y = 1;
 results(2).source = spos;
 results(2).speakers = spk;
-results(2).outer_room = [5, 8]; % outer_room dimensions: length, width
+results(2).outer_room = [5, 8]; % outer_room dimensions: width, depth
 result_is = source_calculation(sig, spos, [spk(1) spk(2)], results(2).outer_room, sr, sound_speed);
 ldist = distance(spos, spk(1));
 ldel_s = round((ldist/sound_speed) * sr);
@@ -130,10 +130,10 @@ for k=2:npos
   spk(1).x = -spk(2).x;
   spk(2).y =  spk(1).y;
   radius = sqrt(((spk(1).x**2)+(spk(1).y**2)));
-  length = rand()*9*radius + radius;
+  depth  = rand()*9*radius + radius;
   width  = rand()*9*radius + radius;
-  results(k).outer_room = [length, width]; % outer_room dimensions: length, width
-  maxdist = min([length width]);
+  results(k).outer_room = [width, depth]; % outer_room dimensions: width, depth
+  maxdist = min([width depth]);
   modulo = (rand()*(maxdist-radius)) + radius;
   angle_size = rand()*2*pi;
   spos.x = modulo * cos(angle_size);

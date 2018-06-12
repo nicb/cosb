@@ -13,10 +13,10 @@
 %
 %
 function r = refl_1st_order(pointA, outer_room)
-  d = outer_room(1);
-  w = outer_room(2);
-  hd = d/2.0;
+  w = outer_room(1);
+  d = outer_room(2);
   hw = w/2.0;
+  hd = d/2.0;
   %
   % front reflection
   %
