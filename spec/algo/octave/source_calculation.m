@@ -9,7 +9,7 @@
 % - x: input signal vector
 % - pos: its coordinate position
 % - inner_room: array of loudspeaker positions
-% - outer_room: array of outer room dimensions (length and width)
+% - outer_room: array of outer room dimensions (width and depth)
 % - sr: sample_rate (default: 48000)
 % - ss: speed of sound (default: 344)
 %
