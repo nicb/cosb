@@ -8,6 +8,7 @@ module Cosb
           attr_accessor :x, :y, :distances, :delays, :attenuations
 
           def initialize(n)
+            self.x = self.y = 0.0
             self.distances = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.delays    = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }
             self.attenuations = { 'direct' => 0.0, 'rfw' => 0.0, 'rrw' => 0.0, 'rbw' => 0.0, 'rlw' => 0.0 }

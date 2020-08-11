@@ -25,6 +25,7 @@ function r = refl_1st_order(pointA, outer_room)
   dfr1 = distance(pointA, fwpos);
   fr1.x = fwpos.x;
   fr1.y = hd + dfr1;
+  fr1.label = "front";
   %
   % right reflection
   %
@@ -33,6 +34,7 @@ function r = refl_1st_order(pointA, outer_room)
   drr1 = distance(pointA, rwpos);
   rr1.y = rwpos.y;
   rr1.x = hw + drr1;
+  rr1.label = "right";
   %
   % back reflection
   %
@@ -41,6 +43,7 @@ function r = refl_1st_order(pointA, outer_room)
   dbr1 = distance(pointA, bwpos);
   br1.x = bwpos.x;
   br1.y = -hd-dbr1;
+  br1.label = "back";
   %
   % left reflection
   %
@@ -49,6 +52,7 @@ function r = refl_1st_order(pointA, outer_room)
   dlr1 = distance(pointA, lwpos);
   lr1.y = lwpos.y;
   lr1.x = -hw-dlr1;
+  lr1.label = "left";
 
   r = [fr1 rr1 br1 lr1];
 end

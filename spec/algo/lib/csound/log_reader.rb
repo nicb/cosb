@@ -4,15 +4,16 @@ module Cosb
       module Csound
 
         class LogReader
-          attr_reader :file_in, :file_out, :room, :signal, :speakers
+          attr_reader :file_in, :file_out, :room, :signal, :speakers, :configuration
 
-          def initialize(fni, fno)
+          def initialize(fni, fno, cfg)
             @file_in = fni
             @file_out = fno
             @room = RoomInfo.new
             @signal = SignalInfo.new
+            @configuration = cfg
             @speakers = []
-            1.upto(6) { |n| @speakers << SpeakerInfo.new(n) }
+            1.upto(self.configuration.global.nchnls) { |n| @speakers << SpeakerInfo.new(n) }
             read
           end
 
@@ -20,7 +21,6 @@ module Cosb
             res = ""
             [:room, :signal].each { |m| res += self.send(m).to_yaml }
             res += "speakers:\n"
-byebug
             self.speakers.each { |s| res += s.to_yaml }
             File.open(self.file_out, 'w') { |yfh| yfh.puts(res) }
           end

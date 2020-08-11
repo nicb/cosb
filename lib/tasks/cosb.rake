@@ -25,6 +25,7 @@ namespace :cosb do
       Y2SCO_EXE_PATH = File.join(ALGO_ROOT, 'csound', 'y2sco')
       CONFIG_PATH = File.join(temp_path, 'config')
       SOURCE_POSITION_PATH = File.join(temp_path, 'config', 'spaces', 'source.yml')
+      GLOBAL_PATH           = File.join(temp_path, 'config', 'global', 'default.yml')
       CSOUND_TMP_DIR = File.join(temp_path, 'csound')
       CSOUND_ORC_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.orc')
       CSOUND_SCO_OUTPUT = File.join(CSOUND_TMP_DIR, 'test.sco')
@@ -78,8 +79,8 @@ namespace :cosb do
       namespace :create do
 
         task :config => [:prepare] do
-          cc = Cosb::Spec::Algo::TestHelper::ConfigurationCreator.new(temp_path)
-          cc.configure
+          @cc = Cosb::Spec::Algo::TestHelper::ConfigurationCreator.new(temp_path)
+          @cc.configure
         end
   
         task :orc => [:config] do
@@ -115,7 +116,7 @@ namespace :cosb do
         end
 
         task :csound_info => ["run:csound"] do
-          ci = Cosb::Spec::Algo::Csound::LogReader.new(CSOUND_LOG, CSOUND_INFO)
+          ci = Cosb::Spec::Algo::Csound::LogReader.new(CSOUND_LOG, CSOUND_INFO, @cc)
           ci.to_yaml
         end
 
